@@ -29,6 +29,10 @@ Route::post('/addressAjax', 'HomeController@getAddress');
 Route::post('/userlist', 'HomeController@getUsers');
 
 Route::resource('docu', 'DocuController');
+Route::post('/receive', 'TransactionsController@receive_docu');
+Route::post('/send', 'TransactionsController@send_docu');
+
+Route::post('/upload', 'FileUploadsController@upload');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/notifications', 'NotificationController@createNewDocuNotification');

@@ -38,6 +38,11 @@ class Docu extends Model implements Auditable
        return $this->belongsTo('App\TypeOfDocu');
     }
 
+    public function fileUploads()
+    {
+        return $this->hasMany('App\FileUploads');
+    }
+
     public function singleSave($data)
     {
         $outData = [];

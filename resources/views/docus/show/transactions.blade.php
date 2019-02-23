@@ -43,6 +43,9 @@
                         <th>
                             @if($transaction->is_received)
                                 Yes
+                                &nbsp;
+                                <a href='#' class="tooltipped" data-position="left"
+                                data-tooltip="{{$transaction->comment}}"><i class='material-icons'>remove_red_eye</i></a>
                             @else
                                 No
                             @endif

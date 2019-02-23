@@ -31,5 +31,6 @@
             </ul>
             @yield('search')
         </div>
+        @yield('extended_nav')
     </nav>
 </div>

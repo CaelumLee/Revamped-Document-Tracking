@@ -24,7 +24,7 @@ class Transaction extends Model
 
             if($user != null){
                 $transaction_instance = new Transaction;
-
+                $transaction_instance->docu_id = $docu_data->id;
                 $transaction_instance->location = Auth::user()->department->id;
                 $transaction_instance->in_charge = Auth::user()->id;
                 $transaction_instance->route = $user->department->id;
@@ -37,5 +37,14 @@ class Transaction extends Model
             }
 
         }
+    }
+
+    public function receive($request)
+    {
+        $transaction_to_update = $this->whereId($request->input('transaction_id'))->first();
+        $transaction_to_update->comment = $request->input('comment');
+        $transaction_to_update->to_continue = $request->input('to_continue');
+        $transaction_to_update->is_received = 1;
+        $transaction_to_update->save();
     }
 }

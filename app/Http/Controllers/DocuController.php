@@ -9,6 +9,7 @@ use App\Statuscode;
 use App\Holidays;
 use App\TypeOfDocu;
 use App\Transaction;
+use App\FileUploads;
 use App\Department;
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 use DB;
@@ -19,7 +20,7 @@ class DocuController extends Controller
 
     public function __construct(Statuscode $statuses, User $user,
     Docu $docu, Holidays $holidays, TypeOfDocu $type_of_docu, Transaction $transaction,
-    Department $department)
+    Department $department, FileUploads $files)
     {
         $this->middleware('auth');
         $this->statuses = $statuses;
@@ -29,6 +30,7 @@ class DocuController extends Controller
         $this->type = $type_of_docu;
         $this->transaction = $transaction;
         $this->department = $department;
+        $this->files = $files;
     }
 
     /**
@@ -78,6 +80,7 @@ class DocuController extends Controller
             'hidden_recipients' => 'required',
             'remarks' => 'required',
             'final_action_date' => 'required',
+            'date_deadline' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -114,16 +117,36 @@ class DocuController extends Controller
         $docu = Docu::join('type_of_docus', 'docus.type_of_docu_id', '=', 'type_of_docus.id')
         ->leftJoin('departments', 'docus.sender_address', '=', 'departments.name')
         ->where('docus.id', $id)
-        ->get(['source_type', 'subject', 'final_action_date', 'docu_type', 'reference_number', 'progress'])
+        ->get(['source_type', 'subject', 'final_action_date', 'docu_type', 
+        'reference_number', 'progress', 'iso_code', 'docus.id', 'confidentiality', 'complexity'])
         ->first();
 
-        $transaction = $this->transaction->where('docu_id', $id)->get();
+        $transaction = $this->transaction->where('docu_id', $id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        
+        $filtered_ids = $transaction->map(function($item){
+            return $item->recipient;
+        });
+
+        $user_list = $this->user
+        ->whereNotIn('users.id', [Auth::user()->id])
+        ->whereNotIn('id', $filtered_ids)
+        ->get(['username']);
+
+        $holidays_list = $this->holidays->all();
+
+        $file_uploads = $this->files->where('docu_id', $id)
+        ->get();
 
         $data = [
             'docu' => $docu,
-            'transactions' => $transaction
+            'transactions' => $transaction,
+            'holidays_list' => $holidays_list,
+            'user_list' => $user_list,
+            'file_uploads' => $file_uploads
         ];
-
+        
         return view('docus.show', compact('data'));
     }
 
