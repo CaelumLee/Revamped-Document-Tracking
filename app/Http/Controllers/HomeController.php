@@ -27,7 +27,48 @@ class HomeController extends Controller
     public function index()
     {
         $title = "All Documents";
-        $docus = Docu::orderBy('created_at', 'desc')->get();
+        $docus = Docu::orderBy('final_action_date', 'asc')->get();
+        return view('home', compact('title', 'docus'));
+    }
+
+    public function accepted()
+    {
+        $title = 'Accepted Documents';
+        $docus = Docu::withTrashed()
+        ->orderBy('final_action_date' , 'asc')
+        ->where('is_accepted', '1')
+        ->get();
+        return view('home', compact('title', 'docus'));
+    }
+
+    public function inactive()
+    {
+        $title = "Inactive Documents";
+        $docus = Docu::orderBy('final_action_date', 'asc')
+        ->where('final_action_date', '<' , date('Y-m-d H:i:s'))
+        ->get();
+        return view('home', compact('title', 'docus'));
+    }
+
+    public function received()
+    {
+        $title = 'Received Documents';
+        $docus = Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        ->where([
+            ['transactions.recipient', Auth::user()->id],
+            ['is_accepted', 0]
+        ])
+        ->orderBy('docus.final_action_date', 'desc')
+        ->get();
+        return view('home', compact('title', 'docus'));
+    }
+
+    public function archived()
+    {
+        $title = "Archived Documents";
+        $docus = Docu::onlyTrashed()
+        ->orderBy('final_action_date' , 'asc')
+        ->get();
         return view('home', compact('title', 'docus'));
     }
 

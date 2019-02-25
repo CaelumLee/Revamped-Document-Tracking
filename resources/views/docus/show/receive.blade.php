@@ -1,3 +1,11 @@
+<?php
+    if($data['docu']->deleted_at != null){
+        $disabled = 'disabled';
+    }
+    else{
+        $disabled = '';
+    }
+?>
 <div id="receive" class="modal">
     <div class="modal-content">
         <div class="row">
@@ -20,7 +28,7 @@
                 )}}
                         
                 <label for="to_continue">
-                  <b>Continue with transaction or stop sending document?? 
+                  <b>Continue with transaction? 
                       <span style="color:red">*</span>
                   </b>
                 </label>
@@ -45,5 +53,5 @@
 </div>
 
 <span class="right">
-    <a href="#receive" class="waves-effect waves-light green btn modal-trigger">Receive Document</a>
+    <a href="#receive" {{$disabled}} class="waves-effect waves-light green btn modal-trigger">Receive Document</a>
 </span>

@@ -15,6 +15,6 @@ class Statuscode extends Model
 
      public function docu()
      {
-          return $this->hasOne('App\Docu');
+          return $this->hasMany('App\Docu');
      }
 }

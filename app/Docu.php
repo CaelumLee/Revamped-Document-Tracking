@@ -7,6 +7,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use App\TypeOfDocu;
 use Carbon\Carbon;
 
 class Docu extends Model implements Auditable
@@ -30,7 +31,7 @@ class Docu extends Model implements Auditable
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'creator');
     }
 
     public function typeOfDocu()
@@ -41,6 +42,16 @@ class Docu extends Model implements Auditable
     public function fileUploads()
     {
         return $this->hasMany('App\FileUploads');
+    }
+
+    public function statuscode()
+    {
+        return $this->belongsTo('App\Statuscode');
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction');
     }
 
     public function singleSave($data)
@@ -65,6 +76,32 @@ class Docu extends Model implements Auditable
         $docu_instance = new Docu;
         $out = $docu_instance->insert($outData);
 
+        return $out;
+    }
+
+    public function batchSave($data)
+    {
+        $outData = [];
+        $outData['creator'] = $data['creator'];
+        $outData['is_rush'] = $data['is_rush'];
+        $outData['confidentiality'] = $data['confidentiality'];
+        $outData['complexity'] = $data['complexity'];
+        if($data['iso'] != null){
+            $outData['iso_code'] = $data['iso'];
+        }
+        else{
+            $outData['iso_code'] = null;
+        }
+        $outData['sender_name'] = $data['sender_name'];
+        $outData['sender_address'] = $data['sender_address'];
+        $type = TypeOfDocu::where('docu_type', $data['typeOfDocu'])->first();
+        $outData['type_of_docu_id'] = $type->id;
+        $outData['subject'] = $data['subject'];
+        $d = Carbon::createFromFormat('Y-m-d H:i', $data['final_action_date'] . ' 23:59');
+        $outData['final_action_date'] = $d->toDateTimeString();
+        $docu_instance = new Docu;
+        $out = $docu_instance->insert($outData);
+        
         return $out;
     }
 
@@ -95,9 +132,25 @@ class Docu extends Model implements Auditable
         $docu_instance->type_of_docu_id = $data['type_of_docu_id'];
         $docu_instance->final_action_date = $data['final_action_date'];
         $docu_instance->subject = $data['subject'];
-        $docu_instance->progress = 5;
+        $docu_instance->statuscode_id = 5;
         $docu_instance->save();
 
         return $docu_instance;
+    }
+
+    public function updateDocu($data, $id)
+    {
+        $docu_to_update = $this->withTrashed()->find($id);
+        $d = Carbon::createFromFormat('Y-m-d H:i', $data->input('final_action_date') . ' 23:59');
+        
+        $docu_to_update->is_rush = $data->rushed;
+        $docu_to_update->confidentiality = $data->confidential;
+        $docu_to_update->complexity = $data->complexity;
+        $docu_to_update->iso_code = $data->iso;
+        $docu_to_update->sender_name = $data->sender;
+        $docu_to_update->sender_address = $data->sender_add;
+        $docu_to_update->type_of_docu_id = $data->typeOfDocu;
+        $docu_to_update->final_action_date = $d->toDateTimeString();
+        $docu_to_update->save();
     }
 }

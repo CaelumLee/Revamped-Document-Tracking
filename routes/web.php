@@ -24,15 +24,20 @@ Route::get('/received', 'HomeController@received')->name('received');
 Route::get('/archived', 'HomeController@archived')->name('archived');
 
 Route::get('/batch', 'BatchController@index')->name('batch');
+Route::post('/add', 'BatchController@add');
 
 Route::post('/addressAjax', 'HomeController@getAddress');
 Route::post('/userlist', 'HomeController@getUsers');
 
 Route::resource('docu', 'DocuController');
+Route::post('/restore/{id}', 'DocuController@restore');
 Route::post('/receive', 'TransactionsController@receive_docu');
 Route::post('/send', 'TransactionsController@send_docu');
 
+Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_info');
+
 Route::post('/upload', 'FileUploadsController@upload');
+Route::post('/jsonFile', 'FileUploadsController@getFiles');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/notifications', 'NotificationController@createNewDocuNotification');

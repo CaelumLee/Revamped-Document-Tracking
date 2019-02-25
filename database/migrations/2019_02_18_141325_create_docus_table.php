@@ -25,7 +25,7 @@ class CreateDocusTable extends Migration
             $table->string('sender_address');
             $table->integer('type_of_docu_id')->unsigned();
             $table->integer('progress')->unsigned();
-            $table->timestamp('final_action_date');
+            $table->dateTime('final_action_date');
             $table->timestamps();
         });
     }

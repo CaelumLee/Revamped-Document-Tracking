@@ -1,6 +1,7 @@
 <?php
     use App\User;
     use App\Department;
+    use Carbon\Carbon;
 ?>
 <div class="col s12">
     <div class="card">
@@ -39,7 +40,7 @@
                         ->first()
                         ->username}}</th>
                         <th>{{$transaction->remarks}}</th>
-                        <th>{{$transaction->date_deadline}}</th>
+                        <th>{{Carbon::parse($transaction->date_deadline)->format('Y-m-d H:i:s a')}}</th>
                         <th>
                             @if($transaction->is_received)
                                 Yes

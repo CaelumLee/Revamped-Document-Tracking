@@ -1,24 +1,65 @@
 <?php
-use App\Statuscode;
-// use Carbon\Carbon;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+$a = Carbon::parse($data['docu']->final_action_date)->format('Y-m-d H:i:s');
+$holidays_list = (array) $data['holidays_list'];
+
+CarbonPeriod::macro('countDaysLeft', function() use ($holidays_list){
+$diff = $this->filter('isWeekday')->count();
+$range = $this->filter('isWeekday')->toArray();
+
+foreach($range as $date){
+    $in = in_array($date->format('m-d'), $holidays_list); 
+    if($in){
+        $diff--;
+    }
+}
+return $diff;
+});
+
+$diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft();
+
 ?>
 @extends('layouts.app')
 
 @section('extended_nav')
-<div class="nav-content">
-    <ul class="tabs tabs-transparent">
-    <li class="tab">
-      <a href='{{route("home")}}' target = "_self">Back</a>
-    </li>
-    <li class="tab"><a href="#">View Routing Info</a></li>
-    <li class="tab disabled"><a href="#">Conver to PDF</a></li>
-    <li class="tab"><a href="#">Archive</a></li>
-    </ul>
-</div>
+    @include('docus.show.extended')
 @endsection
 
 @section('content')
     <br><br><br>
+
+    <div id="archiveConfirm" class="modal">
+        <div class="modal-content">
+            <h4>Confirming archiving of Document: 
+            <br> {{$data['docu']->reference_number}}</h4>
+            <p>Are you sure you want to archive this document?</p>
+            {!!Form::open(['action' => ['DocuController@destroy', $data['docu']->id], 'method' => 'POST'])!!}
+            {{Form::hidden('_method', 'DELETE')}}
+        
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-red btn red">Cancel</a>
+            {{Form::submit('Archive', ['class' => 'btn green'])}}
+            {!!Form::close()!!}
+        
+        </div>
+    </div>
+
+    <div id="restoreRecord" class="modal">
+        <div class="modal-content">
+          <h4>Restoring document with reference number : 
+          <br> {{$data['docu']->reference_number}}</h4>
+          <p>Are you sure you want to restore this document?</p>
+            {!!Form::open(['action' => ['DocuController@restore', $data['docu']->id], 'method' => 'POST'])!!}
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-red btn red">Cancel</a>
+            {{Form::submit('Restore', ['class' => 'btn green'])}}
+            {!!Form::close()!!}
+        </div>
+    </div>
+
     <div class = "msg">
         @include('inc.message')
     </div>
@@ -27,14 +68,15 @@ use App\Statuscode;
             <h5>Record : {{$data['docu']->reference_number}} 
                 &nbsp;&nbsp;    
                 <span class ="blue white-text" style="padding:4px 3px;">
-                    {{Statuscode::whereId($data['docu']->progress)->first()->status}}
+                    {{$data['docu']->statuscode->status}}
                 </span>
                 @foreach($data['transactions'] as $t)
                     @if($t->recipient == Auth::user()->id && $t->is_received == 0)
                         @include('docus.show.receive')
 
                     @elseif($t->recipient == Auth::user()->id 
-                    && $t->is_received == 1 && $t->has_sent == 0 && $t->to_continue == 1)
+                    && $t->is_received == 1 && $t->has_sent == 0 
+                    && $t->to_continue == 1)
                         @include('docus.show.send')
 
                     @endif
@@ -53,7 +95,7 @@ use App\Statuscode;
     <script>
         var holiday_list = [
             @foreach($data['holidays_list'] as $list)
-            '{{$list->holiday_date}}',
+            '{{$list}}',
             @endforeach
         ];
 
@@ -66,6 +108,29 @@ use App\Statuscode;
             }
             return false;
         }
+
+        $(document).on('click', '#fileViewer-close-button', function(){
+            $("#File_to_place").html('Loading');
+        });
+
+        $(document).on('click', '#view_files', function(){
+            var dataID = $(this).data('upload_file_id');
+            $.ajax({
+                type:'POST',
+                url:'/jsonFile',
+                data: {
+                    dataID : dataID,
+                    '_token' : '<?php echo csrf_token() ?>'
+                },
+                success:function(data){
+                    $("#File_to_place").html(data.File_Uploads);
+                },
+                fail:function(err){
+                    console.log(err);
+                }
+            });
+        });
+
         $(document).ready(function(){
             var final_date = '{{explode(" ", $data["docu"]->final_action_date)[0]}}'
             $('#to_continue option:first').attr('disabled', true);

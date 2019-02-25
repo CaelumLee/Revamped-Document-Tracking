@@ -40,11 +40,12 @@ class User extends Authenticatable
 
     public function docu()
     {
-        return $this->hasOne('App\Docu');
+        return $this->hasMany('App\Docu', 'creator');
     }
 
     public function fileUploads()
     {
         return $this->hasMany('App\FileUploads');
     }
+    
 }

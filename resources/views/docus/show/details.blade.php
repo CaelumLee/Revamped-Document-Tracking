@@ -1,12 +1,6 @@
-<div id="edit_docu" class="modal">
-    <div class="modal-content">
-        
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-</div>
-
+<?php
+    use Carbon\Carbon;
+?>
 <div class="col s5">
     <div class="card">
         <nav>
@@ -16,7 +10,7 @@
                 
                 @if(Auth::user()->role->name == 'Admin')
                 <ul id="nav-mobile" class="right">
-                    <li><a class="modal-trigger" href="#edit_docu"><i class="material-icons">edit</i></a></li>
+                    <li><a href="{{route('docu.edit', ['id' => $data['docu']->id])}}"><i class="material-icons">edit</i></a></li>
                 </ul>
                 @endif
             </div>
@@ -25,16 +19,29 @@
         <div class="card-content">
             <table class="striped">
                 <tr>
-                    <td style="width:30%;" class = "blue white-text">Document type</td>
-                    <td>{{$data['docu']->docu_type}}</td>
+                    <td style="width:28%;" class = "blue white-text">Document type</td>
+                    <td>{{$data['docu']->typeOfDocu->docu_type}}</td>
+                </tr>
+
+                <tr>
+                    <td class = "blue white-text">Is it rush</td>
+                    @if($data['docu']->is_rush == 0)
+                        <td>No</td>
+                    @else
+                        <td>Yes</td>
+                    @endif
                 </tr>
 
                 <tr>
                     <td class = "blue white-text">Source type</td>
-                    @if($data['docu']->source_type == null)
+                    <?php use App\Department;
+                        $add = $data['docu']->sender_address;
+                        $dept = Department::where('name', $add)->first();
+                    ?>
+                    @if($dept == null)
                         <td>External</td>
                     @else
-                        <td>{{$data['docu']->source_type}}</td>
+                        <td>{{$dept->source_type}}</td>
                     @endif
                 </tr>
 
@@ -53,6 +60,11 @@
                 </tr>
 
                 <tr>
+                    <td class = "blue white-text">Sender</td>
+                    <td>{{$data['docu']->sender_name}} from {{$data['docu']->sender_address}}</td>
+                </tr>
+
+                <tr>
                     <td class = "blue white-text">Recipients</td>
                     <td>@TODO</td>
                 </tr>
@@ -64,7 +76,10 @@
 
                 <tr>
                     <td class = "blue white-text">Final Action Date</td>
-                    <td>{{$data['docu']->final_action_date}}</td>
+                    <td>
+                        {{Carbon::parse($data['docu']->final_action_date)->format('Y-m-d H:i:s a')}} &nbsp;
+                        {{$diff_final_action_date}} days left
+                    </td>
                 </tr>
 
                 <tr>

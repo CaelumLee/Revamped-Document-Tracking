@@ -53,4 +53,11 @@ class TransactionsController extends Controller
             }
         return redirect()->route('docu.show', ['id' => $request->input('docu_id')]);     
     }
+
+    public function routeinfo($id)
+    {
+        $route_history = $this->transaction->whereDocu_id($id)->first();
+        $docu_id = $id;
+        return view('docus.routeInfo');
+    }
 }

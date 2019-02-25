@@ -1,6 +1,5 @@
 <?php
-use App\User;
-use App\Statuscode;
+use Carbon\Carbon;
 ?>
 @extends('layouts.app')
 
@@ -41,9 +40,9 @@ use App\Statuscode;
             @endif
                 <td>{{$docu->reference_number}}</td>
                 <td><a href="{{route('docu.show', ['id' => $docu->id])}}">{{$docu->subject}}</a></td>
-                <td>{{User::where('id', $docu->creator)->first()->username}}</td>
-                <td>{{$docu->final_action_date}}</td>
-                <td>{{Statuscode::where('id', $docu->progress)->first()->status}}</td>
+                <td>{{$docu->user->username}}</td>
+                <td>{{Carbon::parse($docu->final_action_date)->format('Y-m-d h:i:s a')}}</td>
+                <td>{{$docu->statuscode->status}}</td>
               </tr>
           @endforeach
         </tbody>

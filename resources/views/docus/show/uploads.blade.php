@@ -66,7 +66,7 @@
                             <td>Upload {{$key + 1}}</td>
                             <td>
                                 <a href='#viewFiles' class='waves-effect waves-light btn-small btn-flat modal-trigger' 
-                                id='view_files'>
+                                id='view_files' data-upload_file_id = "{{$file->id}}">
                                     <i class='material-icons'>remove_red_eye</i>
                                 </a>
                             </td>

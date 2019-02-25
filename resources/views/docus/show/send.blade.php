@@ -1,3 +1,11 @@
+<?php
+    if($data['docu']->deleted_at != null){
+        $disabled = 'disabled';
+    }
+    else{
+        $disabled = '';
+    }
+?>
 <div id="send" class="modal">
     <div class="modal-content">
         <div class="row">
@@ -46,6 +54,6 @@
 </div>
 
 <span class="right">
-    <a href="#send" class="waves-effect waves-light green btn modal-trigger">Send Document</a>
+    <a href="#send" {{$disabled}} class="waves-effect waves-light green btn modal-trigger">Send Document</a>
     {!! Form::close() !!} 
 </span>

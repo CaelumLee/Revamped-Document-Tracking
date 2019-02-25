@@ -40,7 +40,11 @@ class DocuController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'My Documents';
+        $docus = $this->docu->orderBy('created_at' , 'asc')
+        ->where('creator', Auth::user()->id)
+        ->get();
+        return view('home', compact('docus', 'title'));
     }
 
     /**
@@ -52,7 +56,7 @@ class DocuController extends Controller
     {
         $docu_type = $this->type->where('is_disabled', '0')->pluck('docu_type', 'id');
         $holidays_list = $this->holidays->all();
-        $user_not_including_the_auth_user = $this->user->whereNotIn('users.id', [Auth::user()->id])
+        $user_not_including_the_auth_user = $this->user->all()
         ->pluck('username');
         $data = [
             'docu_type' => $docu_type,
@@ -87,7 +91,7 @@ class DocuController extends Controller
             try{
                 $qrcode = new BaconQrCodeGenerator;
                 $docu_saved = $this->docu->singleSave($request);
-                $this->transaction->makeTransaction($request, $docu_saved);
+                $this->transaction->makeManualTransaction($request, $docu_saved);
                 
                 $qrcode->size(100)
                 ->encoding('UTF-8')
@@ -114,12 +118,8 @@ class DocuController extends Controller
      */
     public function show($id)
     {   
-        $docu = Docu::join('type_of_docus', 'docus.type_of_docu_id', '=', 'type_of_docus.id')
-        ->leftJoin('departments', 'docus.sender_address', '=', 'departments.name')
-        ->where('docus.id', $id)
-        ->get(['source_type', 'subject', 'final_action_date', 'docu_type', 
-        'reference_number', 'progress', 'iso_code', 'docus.id', 'confidentiality', 'complexity'])
-        ->first();
+        $docu = Docu::withTrashed()
+        ->findOrFail($id);
 
         $transaction = $this->transaction->where('docu_id', $id)
         ->orderBy('created_at', 'desc')
@@ -129,12 +129,21 @@ class DocuController extends Controller
             return $item->recipient;
         });
 
-        $user_list = $this->user
-        ->whereNotIn('users.id', [Auth::user()->id])
-        ->whereNotIn('id', $filtered_ids)
-        ->get(['username']);
+        if($docu->confidentiality == 1){
+            $user_list = $this->user
+            ->where('role_id', 1)
+            ->whereNotIn('users.id', [Auth::user()->id])
+            ->whereNotIn('id', $filtered_ids)
+            ->get(['username']);
+        }
+        else{
+            $user_list = $this->user
+            ->whereNotIn('users.id', [Auth::user()->id])
+            ->whereNotIn('id', $filtered_ids)
+            ->get(['username']);
+        }
 
-        $holidays_list = $this->holidays->all();
+        $holidays_list = $this->holidays->pluck('holiday_date')->toArray();
 
         $file_uploads = $this->files->where('docu_id', $id)
         ->get();
@@ -158,7 +167,21 @@ class DocuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $docu = $this->docu->withTrashed()
+        ->findOrFail($id);
+        $docu_type = $this->type->where('is_disabled', '0')->pluck('docu_type', 'id');
+        $holidays_list = $this->holidays->all();
+        $user_not_including_the_auth_user = $this->user->all()
+        ->pluck('username');
+
+        $data = [
+            'docu' => $docu,
+            'types' => $docu_type,
+            'holidays' => $holidays_list,
+            'users' => $user_not_including_the_auth_user
+        ];
+
+        return view('docus.edit', compact('data'));
     }
 
     /**
@@ -170,7 +193,20 @@ class DocuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'typeOfDocu' => 'required',
+            'rushed' => 'required',
+            'confidential' => 'required',
+            'complexity' => 'required',
+            'subject' => 'required',
+            'sender' => 'required',
+            'sender_add' => 'required',
+            'final_action_date' => 'required',
+        ]);
+
+        $this->docu->updateDocu($request, $id);
+        $request->session()->flash('success', 'Document Updated');
+        return redirect()->route("docu.show", ["id" => $id]);
     }
 
     /**
@@ -179,8 +215,27 @@ class DocuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $docu = $this->docu->withTrashed()->find($id);    
+        if($docu->deleted_at == null){
+            $docu->delete();
+            $request->session()->flash('success', 'Record ' . $docu->reference_number . 
+            ' has been archived');
+        }        
+        return redirect()->route("archived");
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $docu_to_restore = $this->docu->
+        onlyTrashed()
+        ->find($id);
+        
+        $docu_to_restore->restore();
+
+        $request->session()->flash('success', 'Document restored!');
+
+        return redirect()->route("docu.show", ["id" => $id]);
     }
 }
