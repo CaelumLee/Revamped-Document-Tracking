@@ -27,7 +27,9 @@ class HomeController extends Controller
     public function index()
     {
         $title = "All Documents";
-        $docus = Docu::orderBy('final_action_date', 'asc')->get();
+        $docus = Docu::orderBy('final_action_date', 'asc')
+        ->with('statuscode')
+        ->get();
         return view('home', compact('title', 'docus'));
     }
 
@@ -37,6 +39,7 @@ class HomeController extends Controller
         $docus = Docu::withTrashed()
         ->orderBy('final_action_date' , 'asc')
         ->where('is_accepted', '1')
+        ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));
     }
@@ -46,6 +49,7 @@ class HomeController extends Controller
         $title = "Inactive Documents";
         $docus = Docu::orderBy('final_action_date', 'asc')
         ->where('final_action_date', '<' , date('Y-m-d H:i:s'))
+        ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));
     }
@@ -58,7 +62,9 @@ class HomeController extends Controller
             ['transactions.recipient', Auth::user()->id],
             ['is_accepted', 0]
         ])
-        ->orderBy('docus.final_action_date', 'desc')
+        ->select('docus.*')
+        ->with('statuscode')
+        ->orderBy('docus.final_action_date', 'asc')
         ->get();
         return view('home', compact('title', 'docus'));
     }
@@ -68,6 +74,7 @@ class HomeController extends Controller
         $title = "Archived Documents";
         $docus = Docu::onlyTrashed()
         ->orderBy('final_action_date' , 'asc')
+        ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));
     }

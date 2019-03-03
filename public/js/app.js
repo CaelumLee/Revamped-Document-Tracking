@@ -10299,11 +10299,10 @@ $.ajaxSetup({
 });
 
 function makeNotification(data) {
-  console.log("make");
   console.log(data);
   var existingNotifications = notifications.html();
   var message = messageForNotification(data);
-  var newNotificationHtml = "\n        <li class=\"notification active\">\n        <a href ='/docu/" + data.data.data.docu_id + "?read=" + data.id + "'>\n            <div class=\"media\">\n                <div class=\"media-body\">" + message + "<div class=\"notification-meta\">\n                    <small class=\"timestamp\">" + data.created_at + "</small>\n                </div>\n                </div>\n            </div>\n            </a></li>\n    ";
+  var newNotificationHtml = "\n        <li class=\"notification active\">\n        <a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>\n            <div class=\"media\">\n                <div class=\"media-body\">" + message + "<div class=\"notification-meta\">\n                    <small class=\"timestamp\">" + data.created_at + "</small>\n                </div>\n                </div>\n            </div>\n            </a></li>\n    ";
   notifications.html(newNotificationHtml + existingNotifications);
   notificationsCount += 1;
   notificationsCountElem.attr('data-count', notificationsCount);
@@ -10314,12 +10313,10 @@ function makeNotification(data) {
 }
 
 function messageForNotification(data) {
-  console.log("mess");
-  console.log(data);
   var message = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu) {
-    message = "<strong class=\"notification-title\">Document Recieved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.data.reference_number + " was sent to you by " + data.data.data.sender + "</p>";
+    message = "<strong class=\"notification-title\">Document Recieved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>";
   }
 
   return message;

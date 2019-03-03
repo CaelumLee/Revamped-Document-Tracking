@@ -47,5 +47,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\FileUploads');
     }
-    
+
+    public function from()
+    {
+        return $this->hasMany('App\Transaction', 'in_charge');
+    }
+
+    public function to()
+    {
+        return $this->hasMany('App\Transaction', 'recipient');
+    }
 }

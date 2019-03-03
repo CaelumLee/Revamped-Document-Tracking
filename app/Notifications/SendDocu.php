@@ -59,17 +59,16 @@ class SendDocu extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'data' => [
-                'docu_id' => $this->docu->id,
-                'reference_number' => $this->docu->reference_number,
-                'sender' => Auth::user()->username
-            ]
+            'docu_id' => $this->docu->id,
+            'reference_number' => $this->docu->reference_number,
+            'sender' => Auth::user()->username
         ];
     }
 
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
+            'created_at' => $this->docu->created_at,
             'id' => $this->id,
             'data' => [
                 'docu_id' => $this->docu->id,

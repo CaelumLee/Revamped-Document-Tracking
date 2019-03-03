@@ -20,4 +20,14 @@ class Department extends Model
     {
         return $this->hasOne('App\Docu');
     }
+
+    public function fromLoc()
+    {
+        return $this->hasOne('App\Transaction', 'location');
+    }
+
+    public function toLoc()
+    {
+        return $this->hasOne('App\Transaction', 'route');
+    }
 }

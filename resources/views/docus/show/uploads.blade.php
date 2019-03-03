@@ -35,12 +35,12 @@
 </div>
 
 <div class="col s7">
-    <div class="card">
+    <div class="card z-depth-3">
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo" style="font-size : 1.5em !important;">Uploads</a>    
 
-                @foreach($data['transactions'] as $t)
+                @foreach($data['docu']->transaction->sortByDesc('created_at') as $t)
                     @if($t->recipient == Auth::user()->id 
                     && $t->is_received == 1 && $t->has_sent == 0)
                         <ul id="nav-mobile" class="right">

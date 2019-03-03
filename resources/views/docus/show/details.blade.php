@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 ?>
 <div class="col s5">
-    <div class="card">
+    <div class="card z-depth-3">
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo hide-on-med-and-down" style="font-size : 1.5em !important;">Document Details</a>
@@ -24,7 +24,7 @@
                 </tr>
 
                 <tr>
-                    <td class = "blue white-text">Is it rush</td>
+                    <td class = "blue white-text">Rushed Document</td>
                     @if($data['docu']->is_rush == 0)
                         <td>No</td>
                     @else
@@ -60,7 +60,7 @@
                 </tr>
 
                 <tr>
-                    <td class = "blue white-text">Sender</td>
+                    <td class = "blue white-text">Sender Details</td>
                     <td>{{$data['docu']->sender_name}} from {{$data['docu']->sender_address}}</td>
                 </tr>
 

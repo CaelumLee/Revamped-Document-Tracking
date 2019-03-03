@@ -11,6 +11,7 @@
         <div class="row">
             {!! Form::open(['action' => 'TransactionsController@send_docu', 'method' => 'POST', ]) !!}
             <input type="hidden" id="docu_id" name = "docu_id" value = "{{$data['docu']->id}}">
+            <input type="hidden" id="transaction_id" name = "transaction_id" value = "{{$t->id}}">
 
             <div class="col s12">
                 <div class="input-field">
@@ -48,12 +49,11 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-red btn red">Cancel</a>
-        {{Form::submit('Receive', ['class'=>'btn green'])}}
+        {{Form::submit('Send', ['class'=>'btn green'])}}
         {!! Form::close() !!} 
     </div>
 </div>
 
 <span class="right">
     <a href="#send" {{$disabled}} class="waves-effect waves-light green btn modal-trigger">Send Document</a>
-    {!! Form::close() !!} 
 </span>

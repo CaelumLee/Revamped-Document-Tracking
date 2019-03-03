@@ -119,13 +119,22 @@ class DocuController extends Controller
     public function show($id)
     {   
         $docu = Docu::withTrashed()
+        ->with('Transaction')
         ->findOrFail($id);
 
-        $transaction = $this->transaction->where('docu_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $is_received_collection = $docu->transaction
+        ->sortByDesc('created_at')
+        ->map(function($item){
+            return $item->is_received;
+        });
+
+        $all_received = $is_received_collection->every(function($value){
+            return $value == 1;
+        });
         
-        $filtered_ids = $transaction->map(function($item){
+        $filtered_ids = $docu->transaction
+        ->sortByDesc('created_at')
+        ->map(function($item){
             return $item->recipient;
         });
 
@@ -150,10 +159,10 @@ class DocuController extends Controller
 
         $data = [
             'docu' => $docu,
-            'transactions' => $transaction,
             'holidays_list' => $holidays_list,
             'user_list' => $user_list,
-            'file_uploads' => $file_uploads
+            'file_uploads' => $file_uploads,
+            'ready_to_approve' => $all_received
         ];
         
         return view('docus.show', compact('data'));

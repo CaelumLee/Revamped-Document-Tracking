@@ -65,22 +65,33 @@ $diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft
     </div>
     <div class="row">
         <div class="col s12">
-            <h5>Record : {{$data['docu']->reference_number}} 
+            <h5>Reference Number : {{$data['docu']->reference_number}} 
                 &nbsp;&nbsp;    
                 <span class ="blue white-text" style="padding:4px 3px;">
                     {{$data['docu']->statuscode->status}}
-                </span>
-                @foreach($data['transactions'] as $t)
-                    @if($t->recipient == Auth::user()->id && $t->is_received == 0)
+                </span> &nbsp;
+                @if($data['docu']->deleted_at != null)
+                    - Archived
+                @endif
+
+                @foreach($data['docu']->transaction as $t)
+                    @if($t->recipient == Auth::user()->id && $t->is_received == 0 
+                    && $data['docu']->final_action_date >= date('Y-m-d H:i:s'))
                         @include('docus.show.receive')
 
                     @elseif($t->recipient == Auth::user()->id 
                     && $t->is_received == 1 && $t->has_sent == 0 
-                    && $t->to_continue == 1)
+                    && $t->to_continue == 1 && $data['docu']->final_action_date >= date('Y-m-d H:i:s'))
                         @include('docus.show.send')
 
                     @endif
+
+                    @if($data['ready_to_approve'] == true && Auth::user()->role->name == 'Approver'
+                    && $t->recipient == Auth::user()->id && $data['docu']->final_action_date >= date('Y-m-d H:i:s'))
+                        @include('docus.show.approve')
+                    @endif
                 @endforeach
+
             </h5>
         </div>
 

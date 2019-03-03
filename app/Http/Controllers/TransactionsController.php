@@ -39,8 +39,12 @@ class TransactionsController extends Controller
 
         DB::beginTransaction();
             try{
-                $docu_instance = $this->docu->find($request->input('docu_id'))->first();
-                $this->transaction->makeTransaction($request, $docu_instance);
+                $docu_instance = $this->docu->find($request->input('docu_id'));
+                $this->transaction->makeManualTransaction($request, $docu_instance);
+                
+                $transaction_instance = $this->transaction->find($request->input('transaction_id'));
+                $transaction_instance->has_sent = 1;
+                $transaction_instance->save();
 
                 $request->session()->flash('success', 'Document ' . $docu_instance->reference_number 
                 . ' sent!');
@@ -56,8 +60,20 @@ class TransactionsController extends Controller
 
     public function routeinfo($id)
     {
-        $route_history = $this->transaction->whereDocu_id($id)->first();
+        $transactions = $this->transaction
+        ->where([
+            ['docu_id', $id],
+            ['is_received', 1]
+        ])
+        ->get();
+
         $docu_id = $id;
-        return view('docus.routeInfo');
+
+        $data = [
+            'transactions' => $transactions,
+            'id' => $docu_id
+        ];
+        
+        return view('docus.routeInfo', compact('data'));
     }
 }

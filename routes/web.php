@@ -31,6 +31,7 @@ Route::post('/userlist', 'HomeController@getUsers');
 
 Route::resource('docu', 'DocuController');
 Route::post('/restore/{id}', 'DocuController@restore');
+Route::post('/approve/{id}', 'DocuController@approve');
 Route::post('/receive', 'TransactionsController@receive_docu');
 Route::post('/send', 'TransactionsController@send_docu');
 
@@ -38,6 +39,10 @@ Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_i
 
 Route::post('/upload', 'FileUploadsController@upload');
 Route::post('/jsonFile', 'FileUploadsController@getFiles');
+
+Route::get('/dashboard', function(){
+    echo "Hi";
+})->name('dashboard');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/notifications', 'NotificationController@createNewDocuNotification');

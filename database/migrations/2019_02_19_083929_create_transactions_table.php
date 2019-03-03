@@ -21,7 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('recipient')->unsigned();
             $table->string('remarks');
             $table->boolean('is_received')->default(0);
-            $table->timestamp('date_deadline');
+            $table->dateTime('date_deadline');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@
     </li>
 
     <li class="tab">
-        <a href='{{url("routeinfo/{$data["docu"]->id}")}}'>View Routing Info</a>
+        <a href='{{route("route_info", ["id" => $data["docu"]->id])}}' target="_self">View Routing Info</a>
     </li>
 
     <li class="tab disabled"><a href="#">Conver to PDF</a></li>

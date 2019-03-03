@@ -21,6 +21,26 @@ class Transaction extends Model
         return $this->belongsTo('App\Docu');
     }
 
+    public function from()
+    {
+        return $this->belongsTo('App\User', 'in_charge');
+    }
+
+    public function to()
+    {
+        return $this->belongsTo('App\User', 'recipient');
+    }
+
+    public function fromLoc()
+    {
+        return $this->belongsTo('App\Department', 'location');
+    }
+
+    public function toLoc()
+    {
+        return $this->belongsTo('App\Department', 'route');
+    }
+
     public function makeManualTransaction($request, $docu_data)
     {
         $outData = [];
@@ -41,7 +61,7 @@ class Transaction extends Model
     public function makeBatchTransaction($DataFromExcel, $docu_data)
     {
         $outData = [];
-        $recipients = explode(',' , $DataFromExcel['route_to']);
+        $recipients = explode(', ' , $DataFromExcel['route_to']);
         $outData['recipients'] = $recipients;
         $outData['docu_id'] = $docu_data->id;
         $outData['location'] = Auth::user()->department->id;
