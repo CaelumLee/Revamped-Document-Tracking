@@ -13,9 +13,13 @@
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('start');
 
 Auth::routes();
+
+Route::post('/first', 'FirstLoginController@index')->name('first');
+Route::get('/forgot', 'Auth\ForgotPasswordController@index')->name('forgot');
+Route::post('/findUser', 'Auth\ForgotPasswordController@findUser')->name('findUser');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/accepted', 'HomeController@accepted')->name('accepted');

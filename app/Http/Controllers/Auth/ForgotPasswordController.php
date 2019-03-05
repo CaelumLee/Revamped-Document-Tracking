@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
+use App\User;
+use App\Notifications\PasswordChange;
 
 class ForgotPasswordController extends Controller
 {
@@ -18,7 +20,35 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    // use SendsPasswordResetEmails;
+
+    public function index()
+    {
+        return view('auth.passwords.reset');
+    }
+
+    public function findUser(Request $request)
+    {
+        $messages = [
+            'username.exists' => 'No username found'
+        ];
+
+        $validator = $this->validate($request,[
+            'username' => 'required|exists:users,username'
+        ], $messages);
+
+        $user = User::where('username', $request->input('username'))->first();
+        
+        $admin = User::where([
+                ['role_id', 1],
+                ['department_id', $user->department_id]
+                ])
+                ->first();
+        
+        $admin->notify(new PasswordChange($user));
+        return view('auth.passwords.wait');
+
+    }
 
     /**
      * Create a new controller instance.

@@ -13,6 +13,7 @@ var notifications = [];
 
 var NOTIFICATION_TYPES = {
     SendDocu: 'App\\Notifications\\SendDocu',
+    PasswordChange : 'App\\Notifications\\PasswordChange'
 };
 
 $(document).ready(function(){
@@ -60,19 +61,16 @@ $.ajaxSetup({
 });
 
 function makeNotification(data){
-    console.log(data)
     var existingNotifications = notifications.html();
     var message = messageForNotification(data);
+    var href = hrefNotification(data);
     var newNotificationHtml = `
-        <li class="notification active">
-        <a href ='/docu/`+ data.data.docu_id +`?read=`+data.id +`'>
-            <div class="media">
+        <li class="notification active">` +
+        href + 
+            `<div class="media">
                 <div class="media-body">`
                 + message +
-                `<div class="notification-meta">
-                    <small class="timestamp">`+ data.created_at +`</small>
-                </div>
-                </div>
+                `</div>
             </div>
             </a></li>
     `;
@@ -91,7 +89,27 @@ function messageForNotification(data){
     if(data.type == NOTIFICATION_TYPES.SendDocu){
         message =  `<strong class="notification-title">Document Recieved!</strong>
         <p class="notification-desc">Document with reference number `+ 
-        data.data.reference_number +` was sent to you by `+ data.data.sender +`</p>`
+        data.data.reference_number +` was sent to you by `+ data.data.sender +`</p>
+        <div class="notification-meta">
+            <small class="timestamp">`+ data.created_at +`</small>
+        </div>`;
+    }
+    else if(data.type == NOTIFICATION_TYPES.PasswordChange){
+        message = `<strong class="notification-title">Password Change</strong>
+        <p class="notification-desc">User ` + data.data.user + ` is requesting for a
+        password change. Click here to redirect to user dashboard`
+        ;
     }
     return message;
+}
+
+function hrefNotification(data){
+    var href = '';
+    if(data.type == NOTIFICATION_TYPES.SendDocu){
+        href = `<a href ='/docu/`+ data.data.docu_id +`?read=`+data.id +`'>`;
+    }
+    else if(data.type == NOTIFICATION_TYPES.PasswordChange){
+        href = `<a href ='/dashboard/users?read=` + data.id + `'>`;
+    }
+    return href;
 }

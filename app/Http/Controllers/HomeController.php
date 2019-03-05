@@ -26,11 +26,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $title = "All Documents";
-        $docus = Docu::orderBy('final_action_date', 'asc')
-        ->with('statuscode')
-        ->get();
-        return view('home', compact('title', 'docus'));
+        if(Auth::user()->first_login == 1){
+            return view('first');
+        }
+        else{
+            $title = "All Documents";
+            $docus = Docu::orderBy('final_action_date', 'asc')
+            ->with('statuscode')
+            ->get();
+            return view('home', compact('title', 'docus'));    
+        }
     }
 
     public function accepted()

@@ -10255,7 +10255,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 });
 var notifications = [];
 var NOTIFICATION_TYPES = {
-  SendDocu: 'App\\Notifications\\SendDocu'
+  SendDocu: 'App\\Notifications\\SendDocu',
+  PasswordChange: 'App\\Notifications\\PasswordChange'
 };
 $(document).ready(function () {
   $('.sidenav').sidenav();
@@ -10299,10 +10300,10 @@ $.ajaxSetup({
 });
 
 function makeNotification(data) {
-  console.log(data);
   var existingNotifications = notifications.html();
   var message = messageForNotification(data);
-  var newNotificationHtml = "\n        <li class=\"notification active\">\n        <a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>\n            <div class=\"media\">\n                <div class=\"media-body\">" + message + "<div class=\"notification-meta\">\n                    <small class=\"timestamp\">" + data.created_at + "</small>\n                </div>\n                </div>\n            </div>\n            </a></li>\n    ";
+  var href = hrefNotification(data);
+  var newNotificationHtml = "\n        <li class=\"notification active\">" + href + "<div class=\"media\">\n                <div class=\"media-body\">" + message + "</div>\n            </div>\n            </a></li>\n    ";
   notifications.html(newNotificationHtml + existingNotifications);
   notificationsCount += 1;
   notificationsCountElem.attr('data-count', notificationsCount);
@@ -10316,10 +10317,24 @@ function messageForNotification(data) {
   var message = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu) {
-    message = "<strong class=\"notification-title\">Document Recieved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>";
+    message = "<strong class=\"notification-title\">Document Recieved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>\n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+  } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
+    message = "<strong class=\"notification-title\">Password Change</strong>\n        <p class=\"notification-desc\">User " + data.data.user + " is requesting for a\n        password change. Click here to redirect to user dashboard";
   }
 
   return message;
+}
+
+function hrefNotification(data) {
+  var href = '';
+
+  if (data.type == NOTIFICATION_TYPES.SendDocu) {
+    href = "<a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
+  } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
+    href = "<a href ='/dashboard/users?read=" + data.id + "'>";
+  }
+
+  return href;
 }
 
 /***/ }),

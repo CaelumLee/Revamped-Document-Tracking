@@ -17,14 +17,13 @@
     <ul class="dropdown-menu">
     </ul>
     <li class="divider" tabindex="-1"></li>
-    <li><a href="#" class="center">View All</a></li>
 </ul>
 
 <ul id='user_dropdown' class='dropdown-content'>
     <li>
         <form action="{{route('logout')}}" method="POST">
             @csrf    
-            <button class="btn-large btn-logout" type="submit">Logout </button>
+            <button class="btn-large btn-logout red" type="submit">Logout </button>
         </form>
     </li>
 </ul>
