@@ -44,6 +44,7 @@ class TransactionsController extends Controller
                 
                 $transaction_instance = $this->transaction->find($request->input('transaction_id'));
                 $transaction_instance->has_sent = 1;
+                $transaction_instance->sent_at = date('Y-m-d H:i:s');
                 $transaction_instance->save();
 
                 $request->session()->flash('success', 'Document ' . $docu_instance->reference_number 
@@ -67,13 +68,27 @@ class TransactionsController extends Controller
         ])
         ->get();
 
-        $docu_id = $id;
-
         $data = [
             'transactions' => $transactions,
-            'id' => $docu_id
+            'id' => $id //docu_id
         ];
         
         return view('docus.routeInfo', compact('data'));
+    }
+
+    public function responses($id)
+    {
+        $transactions = $this->transaction
+        ->where([
+            ['docu_id', $id]
+        ])
+        ->get();
+
+        $data = [
+            'transactions' => $transactions,
+            'id' => $id //docu_id
+        ];
+
+        return view('docus.responses', compact('data'));
     }
 }

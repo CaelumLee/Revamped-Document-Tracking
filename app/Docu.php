@@ -59,6 +59,7 @@ class Docu extends Model implements Auditable
         $outData = [];
         $outData['creator'] = $data->input('user_id');
         $outData['is_rush'] = $data->input('rushed');
+        $outData['department'] = Auth::user()->department->id;
         $outData['confidentiality'] = $data->input('confidential');
         $outData['complexity'] = $data->input('complexity');
         if($data->input('iso') != null){
@@ -92,6 +93,7 @@ class Docu extends Model implements Auditable
         else{
             $outData['iso_code'] = null;
         }
+        $outData['department'] = $data['department'];
         $outData['sender_name'] = $data['sender_name'];
         $outData['sender_address'] = $data['sender_address'];
         $type = TypeOfDocu::where('docu_type', $data['typeOfDocu'])->first();
@@ -124,6 +126,7 @@ class Docu extends Model implements Auditable
 
         $docu_instance->creator = $data['creator'];
         $docu_instance->is_rush = $data['is_rush'];
+        $docu_instance->department_id = $data['department'];
         $docu_instance->confidentiality = $data['confidentiality'];
         $docu_instance->complexity = $data['complexity'];
         $docu_instance->iso_code = $data['iso_code'];

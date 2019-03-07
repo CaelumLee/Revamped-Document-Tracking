@@ -8,6 +8,10 @@
         <a href='{{route("route_info", ["id" => $data["docu"]->id])}}' target="_self">View Routing Info</a>
     </li>
 
+    <li class="tab">
+        <a href="{{route('responses', ['id' => $data['docu']->id])}}" target='_self'>User Responses</a>
+    </li>
+
     <li class="tab disabled"><a href="#">Conver to PDF</a></li>
 
     @if($data['docu']->deleted_at == null && Auth::user()->role->name == 'Admin')

@@ -2,10 +2,9 @@
     <nav class='blue darken-4'>
         <div class="nav-wrapper">
             <a href="{{URL::to('/')}}/home" class="brand-logo">
-                <img src="https://i.imgur.com/qNfnFn3.png" class="circle responsive-img"
-                style ="width:50px; margin-top:8px;"
+                <img src="{{asset('images/new_logo.png')}}" class="responsive-img"
+                style ="width:270px; margin-top:5px;"
                 />
-                PRRC
             </a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">

@@ -25,6 +25,7 @@
 <body>
     @include('inc.topnav')
     @include('inc.dropdowns')
+    @include('inc.sidenav')
     <div id="body">
         @yield('content')
     </div>

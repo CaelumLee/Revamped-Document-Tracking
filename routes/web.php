@@ -39,14 +39,20 @@ Route::post('/approve/{id}', 'DocuController@approve');
 Route::post('/receive', 'TransactionsController@receive_docu');
 Route::post('/send', 'TransactionsController@send_docu');
 
+Route::get('/responses/{id}', 'TransactionsController@responses')->name('responses');
 Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_info');
 
 Route::post('/upload', 'FileUploadsController@upload');
 Route::post('/jsonFile', 'FileUploadsController@getFiles');
 
-Route::get('/dashboard', function(){
-    echo "Hi";
-})->name('dashboard');
+Route::get('/dashboard/statistics','AdminDashboard@index')->name('dashboard');
+Route::get('/dashboard/users','AdminDashboard@userList')->name('userlists');
+Route::get('/dashboard/allusers','AdminDashboard@allUsers')->name('allUsers');
+Route::get('/dashboard/holidays','AdminDashboard@holidays')->name('holidays');
+
+Route::get('/dashboard/docutype','DocuTypeDashboardController@index')->name('docuType');
+Route::post('/dashboard/docutype/edit','DocuTypeDashboardController@edit');
+Route::post('/dashboard/docutype/disable','DocuTypeDashboardController@disable');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/notifications', 'NotificationController@createNewDocuNotification');

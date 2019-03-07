@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/docuapi', 'DocuAPI@index')->name('DocuJson');
+Route::get('/deptlist', 'DocuAPI@deptlist')->name('DeptList');

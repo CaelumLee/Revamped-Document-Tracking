@@ -41,7 +41,7 @@ class ForgotPasswordController extends Controller
         
         $admin = User::where([
                 ['role_id', 1],
-                ['department_id', $user->department_id]
+                ['department_id', 9]
                 ])
                 ->first();
         

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Docu;
 use App\User;
+use Carbon\Carbon;
 use Auth;
 
 class HomeController extends Controller
@@ -31,7 +32,20 @@ class HomeController extends Controller
         }
         else{
             $title = "All Documents";
-            $docus = Docu::orderBy('final_action_date', 'asc')
+            // $docus_after_now = Docu::where('final_action_date', '>', Carbon::now())
+            // ->orderBy('is_rush', 'desc')
+            // ->orderBy('final_action_date', 'desc')
+            // ->with('statuscode')
+            // ->get();
+            // $docus_before_now = Docu::where('final_action_date', '<', Carbon::now())
+            // ->orderBy('is_rush', 'desc')
+            // ->orderBy('final_action_date', 'desc')
+            // ->with('statuscode')
+            // ->get();
+
+            // $docus = $docus_after_now->merge($docus_before_now);
+            $docus = Docu::orderBy('is_rush', 'desc')
+            ->orderBy('final_action_date', 'desc')
             ->with('statuscode')
             ->get();
             return view('home', compact('title', 'docus'));    
@@ -41,9 +55,31 @@ class HomeController extends Controller
     public function accepted()
     {
         $title = 'Accepted Documents';
+        // $docus_after_now = Docu::withTrashed()
+        // ->where([
+        //     ['final_action_date', '>', Carbon::now()],
+        //     ['is_accepted', '1']
+        // ])
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->with('statuscode')
+        // ->get();
+        // $docus_before_now = Docu::withTrashed()
+        // ->where([
+        //     ['final_action_date', '<', Carbon::now()],
+        //     ['is_accepted', '1']
+        // ])
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->with('statuscode')
+        // ->get();
+
+        // $docus = $docus_after_now->merge($docus_before_now);
         $docus = Docu::withTrashed()
-        ->orderBy('final_action_date' , 'asc')
-        ->where('is_accepted', '1')
+        ->where([
+            ['is_accepted', '1']
+        ])
+        ->orderBy('final_action_date', 'desc')
         ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));
@@ -52,8 +88,9 @@ class HomeController extends Controller
     public function inactive()
     {
         $title = "Inactive Documents";
-        $docus = Docu::orderBy('final_action_date', 'asc')
-        ->where('final_action_date', '<' , date('Y-m-d H:i:s'))
+        $docus = Docu::orderBy('is_rush', 'desc')
+        ->orderBy('final_action_date', 'asc')
+        ->where('final_action_date', '<' , Carbon::now())
         ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));
@@ -62,14 +99,41 @@ class HomeController extends Controller
     public function received()
     {
         $title = 'Received Documents';
-        $docus = Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        // $docus_after_now = Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        // ->where([
+        //     ['transactions.recipient', Auth::user()->id],
+        //     ['is_accepted', 0],
+        //     ['final_action_date', '>', Carbon::now()]
+        // ])
+        // ->select('docus.*')
+        // ->with('statuscode')
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->get();
+
+        // $docus_before_now = Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        // ->where([
+        //     ['transactions.recipient', Auth::user()->id],
+        //     ['is_accepted', 0],
+        //     ['final_action_date', '<', Carbon::now()]
+        // ])
+        // ->select('docus.*')
+        // ->with('statuscode')
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->get();
+        
+        // $docus = $docus_after_now->merge($docus_before_now);
+
+        $docus= Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
         ->where([
             ['transactions.recipient', Auth::user()->id],
-            ['is_accepted', 0]
+            ['is_accepted', 0],
         ])
         ->select('docus.*')
         ->with('statuscode')
-        ->orderBy('docus.final_action_date', 'asc')
+        ->orderBy('is_rush', 'desc')
+        ->orderBy('final_action_date', 'desc')
         ->get();
         return view('home', compact('title', 'docus'));
     }
@@ -77,8 +141,24 @@ class HomeController extends Controller
     public function archived()
     {
         $title = "Archived Documents";
+
+        // $docus_after_now = Docu::onlyTrashed()
+        // ->where('final_action_date', '>', Carbon::now())
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->with('statuscode')
+        // ->get();
+        // $docus_before_now = Docu::onlyTrashed()
+        // ->where('final_action_date', '<', Carbon::now())
+        // ->orderBy('is_rush', 'desc')
+        // ->orderBy('final_action_date', 'desc')
+        // ->with('statuscode')
+        // ->get();
+
+        // $docus = $docus_after_now->merge($docus_before_now);
+
         $docus = Docu::onlyTrashed()
-        ->orderBy('final_action_date' , 'asc')
+        ->orderBy('deleted_at', 'desc')
         ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));

@@ -21,7 +21,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
     return [
         'name' => $fullName,
-        'username' => strtolower($firstname)[0] . strtolower($lastname),
+        'username' => ucfirst(strtolower($firstname)[0]) . ucfirst(strtolower($lastname)),
         'department_id' => rand(1, 14),
         'role_id' => rand(2,4),
         'password' => '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm', // secret

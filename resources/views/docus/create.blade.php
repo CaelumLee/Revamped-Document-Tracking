@@ -117,8 +117,17 @@ use App\Department;
 
                 <div class="col s12">
                     <div class="input-field">
-                        <div id="recipient" name="recipient" class="chips chips-autocomplete"></div>
-                        <input type="hidden" id="hidden_recipients" name = "hidden_recipients" value = "">
+                        <div id="recipient" name="recipient" class="chips chips-autocomplete">
+                            @if(Auth::user()->department->id != 15)
+                                @php($user_ro = \App\User::find(1)->username)
+                            <div class="chip">
+                                {{$user_ro}}
+                            </div>
+                            @else
+                                @php($user_ro = '')
+                            @endif
+                        </div>
+                        <input type="hidden" id="hidden_recipients" name = "hidden_recipients" value = "{{$user_ro}}">
                     </div>
                 </div>
                 
@@ -345,11 +354,18 @@ use App\Department;
         });
 
         $('.chips-autocomplete').chips({
+            @if(Auth::user()->department->id == 15)
             autocompleteOptions: {
             data: recipients_list,
             limit: 5,
             minLength: 1
             },
+
+            @else
+            limit : 0,
+
+            @endif
+
             placeholder : 'Route to/CC: ',
             secondaryPlaceholder : 'another user?',
             onChipAdd : recipientsToInput,

@@ -1,0 +1,290 @@
+$dept1 = new App\Department();
+$dept2 = new App\Department();
+$dept3 = new App\Department();
+$dept4 = new App\Department();
+$dept5 = new App\Department();
+$dept6 = new App\Department();
+$dept7 = new App\Department();
+$dept8 = new App\Department();
+$dept9 = new App\Department();
+$dept10 = new App\Department();
+$dept11 = new App\Department();
+$dept12 = new App\Department();
+$dept13 = new App\Department();
+$dept14 = new App\Department();
+$dept15 = new App\Department();
+
+$dept1->name = 'Administrative Division';
+$dept2->name = 'Deputy Executive Director For Finance and Administrative Services';
+$dept3->name = 'Board of Commissioners';
+$dept4->name = 'Design Division';
+$dept5->name = 'Easement Recovery; Housing and Resettlement Division';
+$dept6->name = 'Environment Management Division';
+$dept7->name = 'Executive Secretary';
+$dept8->name = 'Finance Division';
+$dept9->name = 'Management Information Systems Division';
+$dept10->name = 'Deputy Executive Director for Operations';
+$dept11->name = 'Planning Division';
+$dept12->name = 'Project Manager Office';
+$dept13->name = 'Public Information; Advocacy and Tourism Division';
+$dept14->name = 'Riverbanks Development and Flood Control Division';
+$dept15->name = 'Recording Officer';
+
+$dept1->acronym = 'AD';
+$dept2->acronym = 'DEDFA';
+$dept3->acronym = 'BC';
+$dept4->acronym = 'DD';
+$dept5->acronym = 'ER';
+$dept6->acronym = 'EMD';
+$dept7->acronym = 'ES';
+$dept8->acronym = 'FD';
+$dept9->acronym = 'MISD';
+$dept10->acronym = 'DDDO';
+$dept11->acronym = 'PD';
+$dept12->acronym = 'PMO';
+$dept13->acronym = 'PI';
+$dept14->acronym = 'RDFCD';
+$dept15->acronym = 'RO';
+
+$dept1->source_type= 'Internal';
+$dept2->source_type= 'Internal';
+$dept3->source_type= 'Internal';
+$dept4->source_type= 'Internal';
+$dept5->source_type= 'Internal';
+$dept6->source_type= 'Internal';
+$dept7->source_type= 'Internal';
+$dept8->source_type= 'Internal';
+$dept9->source_type= 'Internal';
+$dept10->source_type= 'Internal';
+$dept11->source_type= 'Internal';
+$dept12->source_type= 'Internal';
+$dept13->source_type= 'Internal';
+$dept14->source_type= 'Internal';
+$dept15->source_type= 'Internal';
+
+$dept1->save();
+$dept2->save();
+$dept3->save();
+$dept4->save();
+$dept5->save();
+$dept6->save();
+$dept7->save();
+$dept8->save();
+$dept9->save();
+$dept10->save();
+$dept11->save();
+$dept12->save();
+$dept13->save();
+$dept14->save();
+$dept15->save();
+
+$role1 = new App\Role();
+$role2 = new App\Role();
+$role3 = new App\Role();
+$role4 = new App\Role();
+
+$role1->name = 'Admin';
+$role2->name = 'Encoder';
+$role3->name = 'Viewer';
+$role4->name = 'Approver';
+
+$role1->save();
+$role2->save();
+$role3->save();
+$role4->save();
+
+$user0 = new App\User();
+$user1 = new App\User();
+$user2 = new App\User();
+$user3 = new App\User();
+$user4 = new App\User();
+
+$user0->username = "AMelevo"
+$user0->name = "Arvin Melevo"
+$user0->department_id = 1
+$user0->role_id = 1
+$user0->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user0->remember_token = "rxmDBmkyV8"
+
+$user1->username = "JLee"
+$user1->name = "Jayson Lee"
+$user1->department_id = 1
+$user1->role_id = 1
+$user1->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user1->remember_token = "rxmDBmkyV8"
+
+$user2->username = "JLucero"
+$user2->name = "Jenine Lucero"
+$user2->department_id = 2
+$user2->role_id = 1
+$user2->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user2->remember_token = "5T6AWxvXhq"
+
+$user3->username = "FNohay"
+$user3->name = "Ferol Nohay"
+$user3->department_id = 3
+$user3->role_id = 1
+$user3->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user3->remember_token = "NztBtgYSNN"
+
+$user4->username = "LIgnacio"
+$user4->name = "Lorenz Ignacio"
+$user4->department_id = 4
+$user4->role_id = 1
+$user4->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user4->remember_token = "ek2QbZ0Paa"
+
+$user0->save()
+$user1->save()
+$user2->save()
+$user3->save()
+$user4->save()
+
+$status1 = new App\Statuscode();
+$status2 = new App\Statuscode();
+$status3 = new App\Statuscode();
+$status4 = new App\Statuscode();
+$status5 = new App\Statuscode();
+
+$status1->status = "Approved"
+$status2->status = "Disapproved"
+$status3->status = "Under Review"
+$status4->status = "Cancelled"
+$status5->status = "Ongoing"
+
+$status1->save()
+$status2->save()
+$status3->save()
+$status4->save()
+$status5->save()
+
+$hol1 = new App\Holidays();
+$hol2 = new App\Holidays();
+$hol3 = new App\Holidays();
+$hol4 = new App\Holidays();
+$hol5 = new App\Holidays();
+$hol6 = new App\Holidays();
+$hol7 = new App\Holidays();
+$hol8 = new App\Holidays();
+$hol9 = new App\Holidays();
+$hol10 = new App\Holidays();
+$hol11 = new App\Holidays();
+$hol12 = new App\Holidays();
+$hol13 = new App\Holidays();
+$hol14 = new App\Holidays();
+$hol15 = new App\Holidays();
+$hol16 = new App\Holidays();
+$hol17 = new App\Holidays();
+$hol18 = new App\Holidays();
+$hol19 = new App\Holidays();
+$hol20 = new App\Holidays();
+$hol21 = new App\Holidays();
+
+$hol1->holiday_date = '01-01';
+$hol1->holiday_name = "New Year's Day";
+$hol1->save();
+
+$hol2->holiday_date = '01-02';
+$hol2->holiday_name = "Day After New Year's Day";
+$hol2->save();
+
+$hol3->holiday_date = '02-05';
+$hol3->holiday_name = "Chinese Lunar New Year's Day";
+$hol3->save();
+
+$hol4->holiday_date = '02-25';
+$hol4->holiday_name = 'People Power Anniversary';
+$hol4->save();
+
+$hol5->holiday_date = '04-09';
+$hol5->holiday_name = 'The Day of Valor';
+$hol5->save();
+
+$hol6->holiday_date = '04-18';
+$hol6->holiday_name = 'Maundy Thursday';
+$hol6->save();
+
+$hol7->holiday_date = '04-19';
+$hol7->holiday_name = 'Good Friday';
+$hol7->save();
+
+$hol8->holiday_date = '04-21';
+$hol8->holiday_name = 'Easter Sunday';
+$hol8->save();
+
+$hol9->holiday_date = '05-01';
+$hol9->holiday_name = 'Labor Day';
+$hol9->save();
+
+$hol10->holiday_date = '06-06';
+$hol10->holiday_name = 'Eidul-Fitar';
+$hol10->save();
+
+$hol11->holiday_date = '06-12';
+$hol11->holiday_name = 'Independence Day';
+$hol11->save();
+
+$hol12->holiday_date = '08-12';
+$hol12->holiday_name = 'Eid al-Adha';
+$hol12->save();
+
+$hol13->holiday_date = '08-21';
+$hol13->holiday_name = 'Ninoy Aquino Day';
+$hol13->save();
+
+$hol14->holiday_date = '08-26';
+$hol14->holiday_name = 'National Heroes Day';
+$hol14->save();
+
+$hol15->holiday_date = '11-01';
+$hol15->holiday_name = "All Saint's Day";
+$hol15->save();
+
+$hol16->holiday_date = '11-02';
+$hol16->holiday_name = "All Souls' Day";
+$hol16->save();
+
+$hol17->holiday_date = '11-30';
+$hol17->holiday_name = 'Bonifacio Day';
+$hol17->save();
+
+$hol18->holiday_date = '12-24';
+$hol18->holiday_name = 'Christmas Eve';
+$hol18->save();
+
+$hol19->holiday_date = '12-25';
+$hol19->holiday_name = 'Christmas Day';
+$hol19->save();
+
+$hol20->holiday_date = '12-30';
+$hol20->holiday_name = 'Rizal Day';
+$hol20->save();
+
+$hol21->holiday_date = '12-31';
+$hol21->holiday_name = "New Year's Eve";
+$hol21->save();
+
+$type1 = new App\TypeOfDocu();
+$type2 = new App\TypeOfDocu();
+$type3 = new App\TypeOfDocu();
+$type4 = new App\TypeOfDocu();
+$type5 = new App\TypeOfDocu();
+$type6 = new App\TypeOfDocu();
+
+$type1->docu_type = 'Memorandum';
+$type2->docu_type = 'Office Order';
+$type3->docu_type = 'Letter';
+$type4->docu_type = 'Projects / Project Proposal';
+$type5->docu_type = 'Financial Documents';
+$type6->docu_type = 'Uncategorized';
+
+$type1->save();
+$type2->save();
+$type3->save();
+$type4->save();
+$type5->save();
+$type6->save();
+
+factory(\App\User::class,10)->create()
+
+quit

@@ -40,6 +40,8 @@ class BatchController extends Controller
                             $DataFromExcel = array();
 
                             $DataFromExcel['creator'] = Auth::user()->id;
+
+                            $DataFromExcel['department'] = Auth::user()->department->id;
                             
                             if(strtolower($row->is_it_rush) == 'yes'){
                                 $rush = 1;
@@ -82,7 +84,13 @@ class BatchController extends Controller
 
                             $DataFromExcel['subject'] = $row->subject;
                             
-                            $DataFromExcel['route_to'] = $row->route_to;
+                            if(Auth::user()->department->id == 15){
+                                $DataFromExcel['route_to'] = $row->route_to;
+                            }
+                            else{
+                                $DataFromExcel['route_to'] = \App\User::find(1)->username;
+                            }
+                            
                             
                             $DataFromExcel['remarks'] = $row->remarks;
 

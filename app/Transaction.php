@@ -61,7 +61,7 @@ class Transaction extends Model
     public function makeBatchTransaction($DataFromExcel, $docu_data)
     {
         $outData = [];
-        $recipients = explode(', ' , $DataFromExcel['route_to']);
+        $recipients = explode(',' , $DataFromExcel['route_to']);
         $outData['recipients'] = $recipients;
         $outData['docu_id'] = $docu_data->id;
         $outData['location'] = Auth::user()->department->id;
@@ -99,6 +99,7 @@ class Transaction extends Model
         $transaction_to_update->comment = $request->input('comment');
         $transaction_to_update->to_continue = $request->input('to_continue');
         $transaction_to_update->is_received = 1;
+        $transaction_to_update->received_at = date('Y-m-d H:i:s');
         $transaction_to_update->save();
     }
 }

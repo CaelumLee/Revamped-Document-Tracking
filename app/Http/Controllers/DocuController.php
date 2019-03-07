@@ -56,12 +56,12 @@ class DocuController extends Controller
     {
         $docu_type = $this->type->where('is_disabled', '0')->pluck('docu_type', 'id');
         $holidays_list = $this->holidays->all();
-        $user_not_including_the_auth_user = $this->user->all()
+        $users = $this->user->all()
         ->pluck('username');
         $data = [
             'docu_type' => $docu_type,
             'holidays_list' => $holidays_list,
-            'users' => $user_not_including_the_auth_user
+            'users' => $users
         ];
         return view('docus.create', compact('data'));
     }
@@ -74,6 +74,10 @@ class DocuController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'hidden_recipients.required' => 'Route to/CC field must not be empty'
+        ];
+
         $this->validate($request,[
             'typeOfDocu' => 'required',
             'rushed' => 'required',
@@ -84,8 +88,8 @@ class DocuController extends Controller
             'hidden_recipients' => 'required',
             'remarks' => 'required',
             'final_action_date' => 'required',
-            'date_deadline' => 'required',
-        ]);
+            'date_deadline' => 'required|before_or_equal:final_action_date',
+        ], $messages);
 
         DB::beginTransaction();
             try{
@@ -121,6 +125,19 @@ class DocuController extends Controller
         $docu = Docu::withTrashed()
         ->with('Transaction')
         ->findOrFail($id);
+
+        //seen
+        $docu->transaction
+        ->sortByDesc('created_at')
+        ->map(function($item){
+            if($item->recipient == Auth::user()->id){
+                if($item->seen_at == null){
+                    $t = $this->transaction->find($item->id);
+                    $t->seen_at = date('Y-m-d H:i:s');
+                    $t->save();
+                }
+            }
+        });
 
         $is_received_collection = $docu->transaction
         ->sortByDesc('created_at')
