@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Docu;
-use App\User;
-use App\Holidays;
 use Auth;
 use Carbon\Carbon;
 
@@ -39,7 +37,10 @@ class AdminDashboard extends Controller
         ->get()
         ->count();
 
-        $total_inactive_docu = Docu::where('final_action_date', '<', date('Y-m-d'))
+        $total_inactive_docu = Docu::where([
+            ['final_action_date', '<', date('Y-m-d')],
+            ['department_id', Auth::user()->department->id]
+        ])
         ->get()
         ->count();
 
@@ -53,25 +54,4 @@ class AdminDashboard extends Controller
         return view('admin.graphs', compact('data_values'));
     }
 
-    public function userList()
-    {
-        $user_list = User::where('department_id', Auth::user()->department->id)
-        ->get();
-
-        return view('admin.users', compact('user_list'));
-    }
-
-    public function allUsers()
-    {
-        $user_list = User::all();
-
-        return view('admin.user_MIS', compact('user_list'));
-    }
-
-    public function holidays()
-    {
-        $holiday_list = Holidays::get();
-
-        return view('admin.holidays', compact('holiday_list'));
-    }
 }

@@ -39,6 +39,8 @@ Route::post('/approve/{id}', 'DocuController@approve');
 Route::post('/receive', 'TransactionsController@receive_docu');
 Route::post('/send', 'TransactionsController@send_docu');
 
+Route::get('/dynamic_pdf/pdf/{id}', 'DynamicPDFController@pdf')->name('pdf');
+
 Route::get('/responses/{id}', 'TransactionsController@responses')->name('responses');
 Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_info');
 
@@ -46,13 +48,21 @@ Route::post('/upload', 'FileUploadsController@upload');
 Route::post('/jsonFile', 'FileUploadsController@getFiles');
 
 Route::get('/dashboard/statistics','AdminDashboard@index')->name('dashboard');
-Route::get('/dashboard/users','AdminDashboard@userList')->name('userlists');
-Route::get('/dashboard/allusers','AdminDashboard@allUsers')->name('allUsers');
-Route::get('/dashboard/holidays','AdminDashboard@holidays')->name('holidays');
+
+Route::get('/dashboard/holidays','HolidaysDashboardController@index')->name('holidays');
+Route::post('/dashboard/holidays/disable','HolidaysDashboardController@disable');
 
 Route::get('/dashboard/docutype','DocuTypeDashboardController@index')->name('docuType');
+Route::post('/dashboard/docutype/add','DocuTypeDashboardController@add');
 Route::post('/dashboard/docutype/edit','DocuTypeDashboardController@edit');
 Route::post('/dashboard/docutype/disable','DocuTypeDashboardController@disable');
+
+Route::get('/dashboard/users','UserController@index')->name('userlists');
+Route::get('/dashboard/allusers','UserController@allUsers')->name('allUsers');
+Route::post('/dashboard/users/add','UserController@add');
+Route::post('/dashboard/users/edit','UserController@edit');
+Route::post('/dashboard/users/pass','UserController@pass');
+Route::post('/dashboard/users/disable','UserController@disable');
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/notifications', 'NotificationController@createNewDocuNotification');

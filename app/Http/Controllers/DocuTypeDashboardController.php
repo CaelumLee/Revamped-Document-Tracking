@@ -8,6 +8,11 @@ use DB;
 
 class DocuTypeDashboardController extends Controller
 {
+    public function __construct(TypeOfDocu $type)
+    {
+        $this->type = $type;
+    }
+
     public function index()
     {
         $docu_type_list = TypeOfDocu::get();
@@ -66,6 +71,18 @@ class DocuTypeDashboardController extends Controller
         $docutype_to_disable->docu_type . ' has been ' . $strout . '!'
         );
         
+        return redirect()->route('docuType');
+    }
+
+    public function add(Request $request)
+    {
+        $this->validate($request,[
+            'docu_type' => ['required', 'unique:type_of_docus,docu_type'],
+        ]);
+
+        $this->type->add($request);
+        $request->session()->flash('success', 'New document type added!');
+
         return redirect()->route('docuType');
     }
 }

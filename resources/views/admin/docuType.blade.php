@@ -1,7 +1,11 @@
 @extends('admin.dashboard')
 @section('main-content')
 <div class="row">
-    <h4>Document Types</h4>
+    <h4>Document Types
+        <span>
+            <a href="#add_type" class="right waves-effect waves-light green btn modal-trigger">Add Document Type</a>
+        </span>
+    </h4>
     <div class="col s12">
         <table class="dashboard-table" id="docu-type-table">
             <thead>
@@ -31,7 +35,7 @@
                                     <i class='material-icons'>edit</i>
                                 </a>
 
-                                <a href='#disable' class='waves-effect white waves-red btn-small btn-flat modal-trigger delete' 
+                                <a href='#disable' class='waves-effect white waves-red btn-small btn-flat modal-trigger disable' 
                                 data-id = "{{$type->id}}" data-name = "{{$type->docu_type}}" data-is_disabled = "{{$type->is_disabled}}">
                                     <i class='material-icons'>
                                         @if($type->is_disabled == 0)
@@ -57,7 +61,6 @@
             <h4>Edit values</h4>
             <div class="input-field col s12">
                 <input disabled value="" id="disabled" type="text" class="validate">
-                <!-- <label for="disabled">Current docu type value</label> -->
             </div>
             <div class="col s12 input-field">
                 {{Form::text('docu_type', '', ['id' => 'docu_type'])}}
@@ -76,7 +79,7 @@
 <div id="disable" class="modal">
     <div class="modal-content">
         <div class="row">
-            <h4 id="title-placeholder">...</h4>
+            <h4 id="title-disable-placeholder">...</h4>
             {!!Form::open(['action' => ['DocuTypeDashboardController@disable'], 'method' => 'POST'])!!}
             <p id="text-holder">Are you sure you want to chuchu this document?</p>
             <input type="hidden" id="docutype_id_disable" name = "docutype_id_disable" value = "">
@@ -88,8 +91,66 @@
         {!!Form::close()!!}
     </div>
 </div>
+
+<div id="add_type" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h4 id="title-add-placeholder">Adding of new document type</h4>
+                {!!Form::open(['action' => ['DocuTypeDashboardController@add'], 'method' => 'POST'])!!}
+                <div class="col s12 input-field">
+                {{Form::text('docu_type', '', ['id' => 'docu_type'])}}
+                {{Form::label('docu_type', 'Enter new value for document type')}}
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-red btn red">Cancel</a>
+      {{Form::submit('Add', ['class' => 'btn green'])}}
+        {!!Form::close()!!}
+    </div>
+</div>
 @stop
 
 @push('scripts')
-<script src="{{asset('js/docuType.js')}}"></script>
+<script>
+    $(document).ready(function(){
+        $('#docu-type-table').DataTable({
+            pagingType: "simple",
+            dom: '<div>pt',
+            pageLength: 15,
+            language:{
+                paginate:{
+                    previous: "<i class='material-icons'>chevron_left</i>",
+                    next: "<i class='material-icons'>chevron_right</i>"
+                }
+            }
+        });
+        $('.modal').modal();
+    });
+
+    $(document).on('click', '.edit', function(){
+        var dataID = $(this).data('id');
+        var docuType = $(this).data('name');
+        $('#disabled').val(docuType);
+        $('#docutype_id').val(dataID);
+    });
+
+    $(document).on('click', '.disable', function(){
+        var dataID = $(this).data('id');
+        var docuType = $(this).data('name');
+        var isDisabled = $(this).data('is_disabled');
+        if(isDisabled == 0){
+            var p = 'Disable ' + docuType + ' in the lists';
+            var t = 'Are you sure you want to disable this document type?'
+        }
+        else{
+            var p = 'Enable ' + docuType + ' in the lists';
+            var t = 'Are you sure you want to enable this document type?'
+        }
+        $('#title-disable-placeholder').text(p);
+        $('#text-holder').text(t);
+        $('#docutype_id_disable').val(dataID);
+    });
+</script>
 @endpush

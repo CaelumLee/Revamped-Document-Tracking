@@ -10,7 +10,6 @@ use App\Holidays;
 use App\TypeOfDocu;
 use App\Transaction;
 use App\FileUploads;
-use App\Department;
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 use DB;
 use Auth;
@@ -20,7 +19,7 @@ class DocuController extends Controller
 
     public function __construct(Statuscode $statuses, User $user,
     Docu $docu, Holidays $holidays, TypeOfDocu $type_of_docu, Transaction $transaction,
-    Department $department, FileUploads $files)
+    FileUploads $files)
     {
         $this->middleware('auth');
         $this->statuses = $statuses;
@@ -29,7 +28,6 @@ class DocuController extends Controller
         $this->holidays = $holidays;
         $this->type = $type_of_docu;
         $this->transaction = $transaction;
-        $this->department = $department;
         $this->files = $files;
     }
 

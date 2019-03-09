@@ -12,4 +12,11 @@ class TypeOfDocu extends Model
     {
         return $this->hasOne('App\Docu');
     }
+
+    public function add($data)
+    {
+        $new_type = new TypeOfDocu;
+        $new_type->docu_type = $data->input('docu_type');
+        $new_type->save();
+    }
 }

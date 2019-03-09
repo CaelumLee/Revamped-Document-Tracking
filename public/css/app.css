@@ -91,3 +91,7 @@ text-decoration: underline;
     padding:10px;
 }
 
+#add_user {
+    height: 100% !important;
+}
+

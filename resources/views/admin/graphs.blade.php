@@ -30,8 +30,8 @@
                     v-bind:start="0"
                     v-bind:end="{{$data_values['b']}}"
                     ></data-counter>
-                    <p>Total records inactive</p>
-                    <p>for this month</p>
+                    <p>Total records inactive on this </p>
+                    <p>department for this month</p>
                 </div>
             </div>
         </div>
@@ -46,8 +46,8 @@
                     v-bind:start="0"
                     v-bind:end="{{$data_values['c']}}"
                     ></data-counter>
-                    <p>Total approved documents</p>
-                    <p>for this month</p>
+                    <p>Total records approve on this</p>
+                    <p>department for this month</p>
                 </div>
             </div>
         </div>
@@ -62,8 +62,8 @@
                     v-bind:start="0"
                     v-bind:end="{{$data_values['d']}}"
                     ></data-counter>
-                    <p>Total archived documents</p>
-                    <p>for this month</p>
+                    <p>Total records archived on this </p>
+                    <p>department for this month</p>
                 </div>
             </div>
         </div>
