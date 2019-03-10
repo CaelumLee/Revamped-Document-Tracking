@@ -2,14 +2,13 @@
     <div class="modal-content">
         <div class="row">
             {!! Form::open(['action' => ['DocuController@approve', $data['docu']->id], 'method' => 'POST', ]) !!}
-            <h4>Aprrover's Decision for
-            <br>{{$data['docu']->reference_number}}</h4>
+            <h4>Aprrover's Decision for {{$data['docu']->reference_number}}</h4>
 
             <div class="col s12">
               <div class="input-field">
                 {{Form::select('to_approve', 
                   ['1' => 'Approve',
-                  '2' => 'Disapprove'
+                  '0' => 'Disapprove'
                   ], null, ['placeholder' => 'Yes/No',
                   'id' => 'to_approve']
                 )}}
@@ -29,6 +28,16 @@
             </div>
 
         </div>
+        
+        @php($latest_sender = $data['docu']->transaction->last()->from)
+        <blockquote>
+              Upon disapproving, it will make a transaction and the
+              recipient will be the latest sender : 
+              {{$latest_sender->username}}
+               and moving the final action date two weeks from now
+        </blockquote>
+
+        <input type="hidden" id="latest_sender_username" name = "latest_sender_username" value = "{{$latest_sender->username}}">
     </div>
 
     <div class="modal-footer">

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use App\Notifications\SendDocu;
+use App\Notifications\DeclineNotif;
 use Carbon\Carbon;
 
 class Transaction extends Model
@@ -74,6 +75,22 @@ class Transaction extends Model
         $out = $transaction_instance->insert($outData, $docu_data);
     }
 
+    public function makeTransactionUponDisapprove($request, $docu_data)
+    {
+        $outData = [];
+        $recipients = explode(',' , $request->input('latest_sender_username'));
+        $outData['recipients'] = $recipients;
+        $outData['docu_id'] = $docu_data->id;
+        $outData['location'] = Auth::user()->department->id;
+        $outData['in_charge'] = Auth::user()->id;
+        $outData['remarks'] = $request->input('remarks');
+        $d = $docu_data->final_action_date;
+        $outData['date_deadline'] = $d;
+        $transaction_instance = new Transaction;
+        $out = $transaction_instance->insert($outData, $docu_data);
+
+    }
+
     public function insert($data, $docu_instance)
     {
         foreach($data['recipients'] as $recipient){
@@ -88,7 +105,12 @@ class Transaction extends Model
                 $transaction_instance->remarks = $data['remarks'];
                 $transaction_instance->date_deadline = $data['date_deadline'];
                 $transaction_instance->save();
-                $user->notify(new SendDocu($docu_instance));
+                if($docu_instance->statuscode_id == 5){
+                    $user->notify(new SendDocu($docu_instance));
+                }
+                elseif($docu_instance->statuscode_id == 2){
+                    $user->notify(new DeclineNotif($docu_instance));
+                }   
             }
         }
     }
@@ -102,4 +124,5 @@ class Transaction extends Model
         $transaction_to_update->received_at = date('Y-m-d H:i:s');
         $transaction_to_update->save();
     }
+
 }

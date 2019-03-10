@@ -10,12 +10,11 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Carbon\Carbon;
 use Auth;
 
-class SendDocu extends Notification implements ShouldQueue
+class DeclineNotif extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $docu;
-
     /**
      * Create a new notification instance.
      *
@@ -68,6 +67,7 @@ class SendDocu extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable)
     {
+        
         return new BroadcastMessage([
             'created_at' => Carbon::parse($this->docu->created_at)->format('Y-m-d H:i:s a'),
             'id' => $this->id,

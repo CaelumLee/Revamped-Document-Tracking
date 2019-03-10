@@ -143,6 +143,7 @@ $diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft
         });
 
         $(document).ready(function(){
+            $('#to_approve option:first').attr('disabled', true);
             var final_date = '{{explode(" ", $data["docu"]->final_action_date)[0]}}'
             $('#to_continue option:first').attr('disabled', true);
             $('.modal').modal();

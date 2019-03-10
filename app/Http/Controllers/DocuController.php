@@ -262,4 +262,31 @@ class DocuController extends Controller
 
         return redirect()->route("docu.show", ["id" => $id]);
     }
+
+    public function approve(Request $request, $id)
+    {
+        
+        $this->validate($request,[
+            'to_approve' => 'required',
+            'remarks' => 'required'
+        ]);
+
+        if($request->input('to_approve') == 0){
+            DB::beginTransaction();
+            try{
+                $docu = $this->docu->disapprove($id);
+                $this->transaction->makeTransactionUponDisapprove($request, $docu);
+
+                $request->session()->flash('success', 'Document ' . $docu->reference_number . ' sent');
+                DB::commit();
+
+                return redirect()->route("docu.show", ["id" => $id]);
+            }
+            catch(\Exception $e){
+                DB::rollback();
+                throw $e;
+            }
+
+        }
+    }
 }

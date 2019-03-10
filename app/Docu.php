@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use App\TypeOfDocu;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use App\Holidays;
 
 class Docu extends Model implements Auditable
 {
@@ -155,5 +157,45 @@ class Docu extends Model implements Auditable
         $docu_to_update->type_of_docu_id = $data->typeOfDocu;
         $docu_to_update->final_action_date = $d->toDateTimeString();
         $docu_to_update->save();
+    }
+
+    public function disapprove($id)
+    {
+        $docu_instance = $this->find($id);
+
+        $start = Carbon::now();
+        $end = Carbon::now()->addWeekdays(14);
+
+        $holiday_dates = Holidays::pluck('holiday_date')->toArray();
+        
+        CarbonPeriod::macro('countDaysLeft', function() use ($holiday_dates){
+            $add_more = 0;
+            $range = $this->filter('isWeekday')->toArray();
+            foreach($range as $date){
+                $in = in_array($date->format('m-d'), $holiday_dates); 
+                if($in){
+                    $add_more += 1;
+                }
+            }
+            return $add_more;
+        });
+
+        $add_more = CarbonPeriod::create($start->addDay()->format('Y-m-d'), $end->format('Y-m-d'))->countDaysLeft();
+        $end->addWeekdays($add_more);
+        
+        //last checker for holiday
+        while(in_array($end->format('m-d'), $holiday_dates)){
+            $end->addWeekdays(1);
+        }
+        
+        $end_date_placholder = $end->format('Y-m-d');
+
+        $real_end_date = Carbon::createFromFormat('Y-m-d H:i', $end_date_placholder . ' 23:59');
+
+        $docu_instance->statuscode_id = 2;
+        $docu_instance->final_action_date = $real_end_date->toDateTimeString();
+        $docu_instance->save();
+
+        return $docu_instance;
     }
 }

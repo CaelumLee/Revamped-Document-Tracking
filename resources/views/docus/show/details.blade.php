@@ -65,11 +65,6 @@
                 </tr>
 
                 <tr>
-                    <td class = "blue white-text">Recipients</td>
-                    <td>@TODO</td>
-                </tr>
-
-                <tr>
                     <td class = "blue white-text">Subject</td>
                     <td>{{$data['docu']->subject}}</td>
                 </tr>
