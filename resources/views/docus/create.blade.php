@@ -169,7 +169,7 @@ use App\Department;
 
                 <div class="col s4 ">
                     <div class="input-field right-align">
-                    {{Form::submit('Create', ['class'=>'btn green'])}}            
+                    {{Form::submit('Create', ['class'=>'btn green', 'id' => 'create_button'])}}            
                     {!! Form::close() !!} 
                     </div>
                 </div>
@@ -178,10 +178,26 @@ use App\Department;
         </div>
     </div>
 </div>
+
+@include('layouts.preloader')
 @stop
 
 @push('scripts')
 <script>
+    (function($) {
+    $.fn.invisible = function() {
+        $(this).css("visibility", "hidden");
+    };
+    $.fn.visible = function() {
+            $(this).css("visibility", "visible");
+    };
+    }(jQuery));
+
+    $('#create_button').click(function(){
+        $('.preloader-background').visible();
+        $('.preloader-wrapper').visible();
+    })
+
     var holiday_list = [
         @foreach($data['holidays_list'] as $list)
           '{{$list->holiday_date}}',
@@ -204,7 +220,7 @@ use App\Department;
         var input = $(this).val();
         $.ajax({
             type:'POST',
-            url:'/userlist',
+            url:'{{route("ajax_userlists")}}',
             data : {
                 'answer' : input,
                 '_token' : '<?php echo csrf_token() ?>'
@@ -338,7 +354,7 @@ use App\Department;
                 $('#sender_add').val('')
                 $.ajax({
                     type:'POST',
-                    url:'/addressAjax',
+                    url:'{{route("ajax_address")}}',
                     data : {
                         'username' : input,
                         '_token' : '<?php echo csrf_token() ?>'

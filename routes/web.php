@@ -30,8 +30,8 @@ Route::get('/archived', 'HomeController@archived')->name('archived');
 Route::get('/batch', 'BatchController@index')->name('batch');
 Route::post('/add', 'BatchController@add');
 
-Route::post('/addressAjax', 'HomeController@getAddress');
-Route::post('/userlist', 'HomeController@getUsers');
+Route::post('/addressAjax', 'HomeController@getAddress')->name('ajax_address');
+Route::post('/userlist', 'HomeController@getUsers')->name('ajax_userlists');
 
 Route::resource('docu', 'DocuController');
 Route::post('/restore/{id}', 'DocuController@restore');
@@ -45,7 +45,7 @@ Route::get('/responses/{id}', 'TransactionsController@responses')->name('respons
 Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_info');
 
 Route::post('/upload', 'FileUploadsController@upload');
-Route::post('/jsonFile', 'FileUploadsController@getFiles');
+Route::post('/jsonFile', 'FileUploadsController@getFiles')->name('file_to_json');
 
 Route::get('/dashboard/statistics','AdminDashboard@index')->name('dashboard');
 
@@ -65,6 +65,6 @@ Route::post('/dashboard/users/pass','UserController@pass');
 Route::post('/dashboard/users/disable','UserController@disable');
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('/notifications', 'NotificationController@createNewDocuNotification');
+    Route::get('/notifications', 'NotificationController@createNewDocuNotification')->name('notifs');
     Route::get('/readAll', 'NotificationController@readAllNotifications')->name('readAll');
 });

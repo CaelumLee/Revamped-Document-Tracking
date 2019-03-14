@@ -10251,13 +10251,15 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "80dfb464ef1afbfcbec0",
   cluster: "ap1",
-  encrypted: true
+  encrypted: true,
+  authEndpoint: url + '/broadcasting/auth'
 });
 var notifications = [];
 var NOTIFICATION_TYPES = {
   SendDocu: 'App\\Notifications\\SendDocu',
   PasswordChange: 'App\\Notifications\\PasswordChange',
-  DeclineNotif: 'App\\Notifications\\DeclineNotif'
+  DeclineNotif: 'App\\Notifications\\DeclineNotif',
+  AcceptNotif: 'App\\Notifications\\AcceptNotif'
 };
 $(document).ready(function () {
   $('.sidenav').sidenav();
@@ -10270,7 +10272,7 @@ $(document).ready(function () {
   });
 
   if (Laravel.userId) {
-    $.get('/notifications', function (data) {
+    $.get(notif_url, function (data) {
       if (data.length) {
         data.map(function (notification) {
           makeNotification(notification);
@@ -10323,6 +10325,8 @@ function messageForNotification(data) {
     message = "<strong class=\"notification-title\">Password Change</strong>\n        <p class=\"notification-desc\">User " + data.data.user + " is requesting for a\n        password change. Click here to redirect to user dashboard";
   } else if (data.type == NOTIFICATION_TYPES.DeclineNotif) {
     message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was dissaproved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+  } else if (data.type == NOTIFICATION_TYPES.AcceptNotif) {
+    message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was approved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   }
 
   return message;
@@ -10331,7 +10335,7 @@ function messageForNotification(data) {
 function hrefNotification(data) {
   var href = '';
 
-  if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif) {
+  if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif || data.type == NOTIFICATION_TYPES.AcceptNotif) {
     href = "<a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
     href = "<a href ='/dashboard/users?read=" + data.id + "'>";

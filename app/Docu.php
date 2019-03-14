@@ -198,4 +198,13 @@ class Docu extends Model implements Auditable
 
         return $docu_instance;
     }
+
+    public function approve($id){
+        $docu_instance = $this->find($id);
+        $docu_instance->statuscode_id = 1;
+        $docu_instance->approved_at = date('Y-m-d H:i:s');
+        $docu_instance->save();
+
+        return $docu_instance;
+    }
 }

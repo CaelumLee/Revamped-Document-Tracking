@@ -35,13 +35,13 @@
                 <tr>
                     <td class = "blue white-text">Source type</td>
                     <?php use App\Department;
-                        $add = $data['docu']->sender_address;
-                        $dept = Department::where('name', $add)->first();
+                        $sender_address = $data['docu']->sender_address;
+                        $dept = Department::where('name', $sender_address)->first();
                     ?>
                     @if($dept == null)
                         <td>External</td>
                     @else
-                        <td>{{$dept->source_type}}</td>
+                        <td>Internal</td>
                     @endif
                 </tr>
 

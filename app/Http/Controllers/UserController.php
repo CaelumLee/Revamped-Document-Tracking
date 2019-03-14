@@ -7,6 +7,7 @@ use App\User;
 use App\Department;
 use DB;
 use App\Role;
+use Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller

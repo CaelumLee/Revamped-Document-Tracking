@@ -29,13 +29,14 @@
 
         </div>
         
-        @php($latest_sender = $data['docu']->transaction->last()->from)
+        @php($latest_sender = $data['docu']->transaction->last())
         <blockquote>
               Upon disapproving, it will make a transaction and the
               recipient will be the latest sender : 
-              {{$latest_sender->username}}
+              {{$latest_sender->->from->username}}
                and moving the final action date two weeks from now
         </blockquote>
+        <input type="hidden" id="transaction_id" name = "transaction_id" value = "{{$t->latest_sender->id}}">
 
         <input type="hidden" id="latest_sender_username" name = "latest_sender_username" value = "{{$latest_sender->username}}">
     </div>

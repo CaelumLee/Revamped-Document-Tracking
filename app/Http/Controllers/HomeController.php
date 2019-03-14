@@ -76,9 +76,7 @@ class HomeController extends Controller
 
         // $docus = $docus_after_now->merge($docus_before_now);
         $docus = Docu::withTrashed()
-        ->where([
-            ['is_accepted', '1']
-        ])
+        ->whereNotNull('approved_at')
         ->orderBy('final_action_date', 'desc')
         ->with('statuscode')
         ->get();
@@ -125,16 +123,26 @@ class HomeController extends Controller
         
         // $docus = $docus_after_now->merge($docus_before_now);
 
-        $docus= Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        $docu_ids= Docu::
+        join('transactions', 'docus.id', '=', 'transactions.docu_id')
         ->where([
             ['transactions.recipient', Auth::user()->id],
-            ['is_accepted', 0],
+            ['deleted_at', null]
         ])
-        ->select('docus.*')
+        ->select('docus.id')
+        ->groupBy('docus.id')
+        ->get();
+        
+        $docu_ids = $docu_ids->map(function($item){
+            return $item->id;
+        });
+        
+        $docus = Docu::whereIn('id', $docu_ids)
         ->with('statuscode')
         ->orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'desc')
         ->get();
+
         return view('home', compact('title', 'docus'));
     }
 

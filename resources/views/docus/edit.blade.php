@@ -282,7 +282,7 @@
                 $('#sender_add').val('')
                 $.ajax({
                     type:'POST',
-                    url:'/addressAjax',
+                    url:'{{route("ajax_address")}}',
                     data : {
                         'username' : input,
                         '_token' : '<?php echo csrf_token() ?>'

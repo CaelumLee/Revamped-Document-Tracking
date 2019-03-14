@@ -24,7 +24,7 @@ class AdminDashboard extends Controller
         ->whereBetween("created_at", [$starting_month, $endinng_month])
         ->where([
             ['department_id', Auth::user()->department->id],
-            ['is_accepted', 1]
+            //['is_accepted', 1]
         ])
         ->get()
         ->count();

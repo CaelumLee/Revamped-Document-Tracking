@@ -22,22 +22,30 @@
               </div>
         </div>
         <div class="col s6">
-        {{Form::submit('Submit', ['class'=>'btn green'])}}            
+        {{Form::submit('Submit', ['class'=>'btn green', 'id' => 'submit_button'])}}            
         {!! Form::close() !!} 
         </div>
     </div>
 </div>
 
+@include('layouts.preloader')
+
 @stop
 
 @push('scripts')
 <script>
-var isAdvancedUpload = function() {
-  var div = document.createElement('div');
-  return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-}();
-if (isAdvancedUpload) {
-  $form.addClass('has-advanced-upload');
-}
+  (function($) {
+    $.fn.invisible = function() {
+        $(this).css("visibility", "hidden");
+    };
+    $.fn.visible = function() {
+        $(this).css("visibility", "visible");
+    };
+    }(jQuery));
+
+    $('#submit_button').click(function(){
+        $('.preloader-background').visible();
+        $('.preloader-wrapper').visible();
+    })
 </script>
 @endpush

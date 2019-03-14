@@ -6,7 +6,8 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key : "80dfb464ef1afbfcbec0",
     cluster : "ap1",
-    encrypted: true
+    encrypted: true,
+    authEndpoint: url + '/broadcasting/auth'
 });
 
 var notifications = [];
@@ -14,7 +15,8 @@ var notifications = [];
 var NOTIFICATION_TYPES = {
     SendDocu: 'App\\Notifications\\SendDocu',
     PasswordChange : 'App\\Notifications\\PasswordChange',
-    DeclineNotif : 'App\\Notifications\\DeclineNotif'
+    DeclineNotif : 'App\\Notifications\\DeclineNotif',
+    AcceptNotif : 'App\\Notifications\\AcceptNotif'
 };
 
 $(document).ready(function(){
@@ -29,7 +31,7 @@ $(document).ready(function(){
     });
 
     if(Laravel.userId) {
-        $.get('/notifications', function (data) {
+        $.get(notif_url, function (data) {
             if(data.length){
                 data.map(function (notification){
                     makeNotification(notification);
@@ -110,12 +112,22 @@ function messageForNotification(data){
             <small class="timestamp">`+ data.created_at +`</small>
         </div>`;
     }
+    else if(data.type == NOTIFICATION_TYPES.AcceptNotif){
+        message =  `<strong class="notification-title">Document Disapproved!</strong>
+        <p class="notification-desc">Document with reference number `+ 
+        data.data.reference_number +` was approved and sent to you by `
+        + data.data.sender +`<br>Click to see the remarks made</p> 
+        <div class="notification-meta">
+            <small class="timestamp">`+ data.created_at +`</small>
+        </div>`;
+    }
     return message;
 }
 
 function hrefNotification(data){
     var href = '';
-    if(data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif){
+    if(data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif
+    || data.type == NOTIFICATION_TYPES.AcceptNotif){
         href = `<a href ='/docu/`+ data.data.docu_id +`?read=`+data.id +`'>`;
     }
     else if(data.type == NOTIFICATION_TYPES.PasswordChange){

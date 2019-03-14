@@ -277,6 +277,11 @@ class DocuController extends Controller
                 $docu = $this->docu->disapprove($id);
                 $this->transaction->makeTransactionUponDisapprove($request, $docu);
 
+                $transaction_instance = $this->transaction->find($request->input('transaction_id'));
+                $transaction_instance->has_sent = 1;
+                $transaction_instance->sent_at = date('Y-m-d H:i:s');
+                $transaction_instance->save();
+
                 $request->session()->flash('success', 'Document ' . $docu->reference_number . ' sent');
                 DB::commit();
 
@@ -287,6 +292,23 @@ class DocuController extends Controller
                 throw $e;
             }
 
+        }
+
+        else{
+            DB::beginTransaction();
+            try{
+                $docu = $this->docu->approve($id);
+                $this->transaction->makeTransactionUponDisapprove($request, $docu);
+
+                $request->session()->flash('success', 'Document ' . $docu->reference_number . ' sent');
+                DB::commit();
+
+                return redirect()->route("docu.show", ["id" => $id]);
+            }
+            catch(\Exception $e){
+                DB::rollback();
+                throw $e;
+            }  
         }
     }
 }

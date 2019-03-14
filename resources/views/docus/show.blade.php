@@ -124,11 +124,24 @@ $diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft
             $("#File_to_place").html('Loading');
         });
 
+        $(document).on('click', '#view_comment', function(){
+            var username = $(this).data('username');
+            var comment = $(this).data('comment');
+            $('#comment-title').text('Comment made by ' + username);
+            $('#comment-content').text(comment);
+        });
+
+        $(document).on('click', '#edit_deadline_date', function(){
+            var deadline = $(this).data('deadline');
+            $('#old_deadline').val(deadline);
+            M.updateTextFields();
+        })
+
         $(document).on('click', '#view_files', function(){
             var dataID = $(this).data('upload_file_id');
             $.ajax({
                 type:'POST',
-                url:'/jsonFile',
+                url:'{{route("file_to_json")}}',
                 data: {
                     dataID : dataID,
                     '_token' : '<?php echo csrf_token() ?>'

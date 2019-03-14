@@ -17,7 +17,6 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('acronym', 7);
-            $table->string('source_type', 9);
             $table->timestamps();
         });
     }

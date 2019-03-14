@@ -20,7 +20,7 @@ class TimestampsOnTransactions extends Migration
         });
 
         Schema::table('docus', function (Blueprint $table) {
-            $table->timestamp('accepted_at')->nullable();
+            $table->timestamp('approved_at')->nullable();
         });
     }
 

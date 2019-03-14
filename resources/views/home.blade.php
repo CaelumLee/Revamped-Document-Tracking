@@ -34,7 +34,7 @@ use Carbon\Carbon;
         <tbody>
           @foreach($docus as $docu)
             @if($docu->is_rush)
-              <tr class = "red lighten-2">
+              <tr class = "red lighten-3">
             @else
               <tr>
             @endif

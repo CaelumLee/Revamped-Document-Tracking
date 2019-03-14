@@ -2,9 +2,11 @@
 @section('main-content')
 <div class="row">
     <h4>Document Types
+        @if(Auth::user()->department->id == 9 && Auth::user()->role->id == 1)
         <span>
             <a href="#add_type" class="right waves-effect waves-light green btn modal-trigger">Add Document Type</a>
         </span>
+        @endif
     </h4>
     <div class="col s12">
         <table class="dashboard-table" id="docu-type-table">

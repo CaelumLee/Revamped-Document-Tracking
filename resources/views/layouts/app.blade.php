@@ -40,6 +40,7 @@
 <script>
     var url = '{{URL::to('/')}}';
     window.Laravel = [$('meta[name="csrf-token"]').attr('content')];
+    window.notif_url = ['{{route("notifs")}}'];
 
     window.Laravel.userId = <?php echo auth()->user()->id; ?>
 </script>
