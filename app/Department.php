@@ -30,4 +30,22 @@ class Department extends Model
     {
         return $this->hasOne('App\Transaction', 'route');
     }
+
+    public function edit($request)
+    {
+        $dept = $this->find($request->input('department_id'));
+        $dept->name = $request->input('dept_name');
+        $dept->acronym = $request->input('dept_acro');
+        $dept->save();
+
+        return $dept;
+    }
+
+    public function add($request)
+    {
+        $new_dept = new Department;
+        $new_dept->name = $request->input('dept_name');
+        $new_dept->acronym = $request->input('dept_acro');
+        $new_dept->save();
+    }
 }

@@ -2,9 +2,7 @@
     <nav class='blue darken-4'>
         <div class="nav-wrapper">
             <a href="{{URL::to('/')}}/home" class="brand-logo">
-                <img src="{{asset('images/new_logo.png')}}" class="responsive-img"
-                style ="width:270px; margin-top:5px;"
-                />
+                <img src="{{asset('images/new_logo.png')}}" class="responsive-img" style="width:270px; margin-top:5px;" />
             </a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
@@ -15,7 +13,7 @@
                     </a>
                 </li>
                 @endif
-                <li class = "dropdown-notification">
+                <li class="dropdown-notification">
                     <a class='dropdown-trigger' href="#" data-target='notif_dropdown'>
                         <span class="new badge red">0</span>
                         <i data-count="0" class="material-icons left">notifications</i>

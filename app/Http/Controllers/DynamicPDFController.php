@@ -15,7 +15,7 @@ class DynamicPDFController extends Controller
     
     function get_docu_data($docu_id)
     {
-     $docu_data = Docu::withTrashed()->find($docu_id);
+     $docu_data = Docu::withTrashed()->with('transaction')->find($docu_id);
      return $docu_data;
     }
 
@@ -30,6 +30,10 @@ class DynamicPDFController extends Controller
     function convert_docu_data_to_html($docu_id)
     {
         $docu_data = $this->get_docu_data($docu_id);
+        $route_info = $docu_data->transaction->reject(function($item){
+            return $item->is_received == 0;
+        });
+        
         if($docu_data->is_rush){
             $checked = 'checked';
         }
@@ -135,6 +139,10 @@ class DynamicPDFController extends Controller
                     <h3 class="comfortaa blue-text">PASIG RIVER REHABILITATION COMMISION</h3>
                     <p class="roboto">DOCUMENT ROUTING SLIP</p></td>
                 <td>
+                    <img src="' . url("/storage/qrcodes/" . $docu_data->reference_number . ".png") 
+                    . '" class="logo">
+                </td>
+                <td style="float:right;">
                     <div class="roboto rush">
                         <label>
                             <input type="checkbox"'. $checked .'>
@@ -143,16 +151,12 @@ class DynamicPDFController extends Controller
                         </label>
                     </div>
                 </td>
-                <td style="float:right;">
-                <img src="' . url("/storage/qrcodes/" . $docu_data->reference_number . ".png") 
-                . '" class="logo">
-                </td>
             </tr>
         </table>
         <br><br>
             <table class="roboto slip">
                 <tr>
-                    <td colspan="2" ><b>From:</b> <br>	&nbsp;	&nbsp;'."Wala pa".'</td>
+                    <td colspan="2" ><b>From:</b> <br>	&nbsp;	&nbsp;'. $docu_data->user->name .'</td>
                     <td colspan="2"><b>Date Received:</b>
                         <br> 	&nbsp;	&nbsp;'. Carbon::parse($docu_data->created_at)->format('Y-m-d g:i:s A') .'</td>
                         <td colspan="2"><b>Reference Number:</b> <br>
@@ -177,16 +181,28 @@ class DynamicPDFController extends Controller
                                 <th >DATE COMPLIED</th>
                             </tr>';
                             
-                            foreach($docu_data->transaction as $info){
-                                $output .= '<tr>
-                                    <td>' . $info->from->username . '</td>
-                                    <td>' . $info->to->username . '</td>
-                                    <td>' . Carbon::parse($info->created_at)->format('Y-m-d H:i:s a') . '</td>
-                                    <td>' . $info->remarks . '</td>
-                                    <td>' . Carbon::parse($info->date_deadline)->format('Y-m-d H:i:s a') . '</td>
-                                    <td>' . Carbon::parse($info->updated_at)->format('Y-m-d H:i:s a') . '</td>
+                            if($route_info->isNotEmpty()){
+                                foreach($route_info as $info){
+                                    $output .= '<tr>
+                                        <td>' . $info->from->username . '</td>
+                                        <td>' . $info->to->username . '</td>
+                                        <td>' . Carbon::parse($info->created_at)->format('Y-m-d H:i:s a') . '</td>
+                                        <td>' . $info->remarks . '</td>
+                                        <td>' . Carbon::parse($info->date_deadline)->format('Y-m-d H:i:s a') . '</td>
+                                        <td>' . Carbon::parse($info->updated_at)->format('Y-m-d H:i:s a') . '</td>
+                                    </tr>';
+                                }
+                            }                        
+                            else{
+                                $output .= '<tr> 
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>No Routing Info</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>';
-                            }
+                            }    
 
                         $output .= '</table>'.
                         '<footer>ISO CODE: ' . $docu_data->iso_code .'</footer></body></html>';

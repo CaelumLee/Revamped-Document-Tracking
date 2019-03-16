@@ -1,15 +1,17 @@
 <ul class="sidenav" id="mobile-demo">
-<li><div class="user-view">
-    <div class="background">
-        <img src="{{asset('images/office.jpg')}}">
-    </div>
-    <a href="#!user"><img class="circle" src="{{asset('images/unknown.jpg')}}"></a>
-    <a href="#!name"><span class="white-text name">{{Auth::user()->username}}</span></a>
-    <a href="#!department"><span class="white-text email">{{Auth::user()->department->name}}</span></a>
-    </div></li>
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="{{asset('images/office.jpg')}}">
+            </div>
+            <a href="#!user"><img class="circle" src="{{asset('images/unknown.jpg')}}"></a>
+            <a href="#!name"><span class="white-text name">{{Auth::user()->username}}</span></a>
+            <a href="#!department"><span class="white-text email">{{Auth::user()->department->name}}</span></a>
+        </div>
+    </li>
     <li>
         <a class='dropdown-trigger' href='#' data-target='create_record'>
-            <i class="material-icons">add</i>&nbsp; 
+            <i class="material-icons">add</i>&nbsp;
             Create Record
         </a>
     </li>
@@ -22,11 +24,16 @@
     @if(Auth::user()->role->name == 'Admin')
     <li><a href='{{route("dashboard")}}'><i class="material-icons">people</i>&nbsp; Admin Dashboard</a></li>
     @endif
-    <li><div class="divider"></div></li>
-    <li><form action="{{route('logout')}}" method="POST">
-        @csrf    
-        <button class="btn btn-logout" type="submit" style="margin-left:30px;"><i class="fa fa-sign-out"></i>&nbsp; Logout </button>
-    </form></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <form action="{{route('logout')}}" method="POST">
+            @csrf
+            <button class="btn btn-logout" type="submit" style="margin-left:30px;"><i class="fa fa-sign-out"></i>&nbsp;
+                Logout </button>
+        </form>
+    </li>
 </ul>
 
 <ul id='create_record' class='dropdown-content'>

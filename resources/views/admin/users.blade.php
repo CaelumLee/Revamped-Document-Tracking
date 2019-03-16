@@ -14,12 +14,12 @@
             </thead>
             <tbody>
                 @foreach($user_list as $user)
-                    <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->username}}</td>
-                        <td>{{$user->role->name}}</td>
-                    </tr>
+                <tr>
+                    <td>{{$user->id}}</td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->username}}</td>
+                    <td>{{$user->role->name}}</td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -34,12 +34,13 @@
         pagingType: "simple",
         dom: '<div>pt',
         pageLength: 15,
-        language:{
-            paginate:{
+        language: {
+            paginate: {
                 previous: "<i class='material-icons'>chevron_left</i>",
                 next: "<i class='material-icons'>chevron_right</i>"
             }
         }
     });
+
 </script>
 @endpush

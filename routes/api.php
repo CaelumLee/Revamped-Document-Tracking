@@ -19,3 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/docuapi', 'DocuAPI@index')->name('DocuJson');
 Route::get('/deptlist', 'DocuAPI@deptlist')->name('DeptList');
+
+Route::post('/mobile_login', 'MobileAPI@login');
+Route::get('/all_docus', 'MobileAPI@all_docu');

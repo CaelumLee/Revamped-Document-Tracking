@@ -113,7 +113,7 @@ function messageForNotification(data){
         </div>`;
     }
     else if(data.type == NOTIFICATION_TYPES.AcceptNotif){
-        message =  `<strong class="notification-title">Document Disapproved!</strong>
+        message =  `<strong class="notification-title">Document Approved!</strong>
         <p class="notification-desc">Document with reference number `+ 
         data.data.reference_number +` was approved and sent to you by `
         + data.data.sender +`<br>Click to see the remarks made</p> 

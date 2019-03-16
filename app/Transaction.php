@@ -96,7 +96,7 @@ class Transaction extends Model
     public function makeTransactionUponApprove($request, $docu_data)
     {
         $outData = [];
-        $recipients = User::find($docu_data->creator)->username;
+        $recipients = [User::find($docu_data->creator)->username];
         $outData['recipients'] = $recipients;
         $outData['docu_id'] = $docu_data->id;
         $outData['location'] = Auth::user()->department->id;
@@ -122,7 +122,7 @@ class Transaction extends Model
                 $transaction_instance->remarks = $data['remarks'];
                 $transaction_instance->date_deadline = $data['date_deadline'];
                 $transaction_instance->save();
-                if($docu_instance->statuscode_id == 5){
+                if($docu_instance->statuscode_id == 5 || $docu_instance->statuscode_id == 3){
                     $user->notify(new SendDocu($docu_instance));
                 }
                 elseif($docu_instance->statuscode_id == 2){

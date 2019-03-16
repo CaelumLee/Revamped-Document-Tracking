@@ -20,31 +20,32 @@ use Carbon\Carbon;
             </thead>
             <tbody>
                 @foreach($holiday_list as $holiday)
-                    <tr>
-                        <td>{{$holiday->id}}</td>
-                        <?php 
+                <tr>
+                    <td>{{$holiday->id}}</td>
+                    <?php 
                             $date = $holiday->holiday_date;
                             $month = explode('-', $date)[0];
                             $day = explode('-', $date)[1];
                             $holiday_date = Carbon::createFromDate(null, $month, $day)->format('M-d-Y');
                         ?>
-                        <td>{{$holiday_date}}</td>
-                        <td>{{$holiday->holiday_name}}</td>
-                        @if($holiday->is_disabled == 0)
-                        <td>No</td>
-                        @else
-                        <td>Yes</td>
-                        @endif
-                        @if(Auth::user()->department->id == 9 && Auth::user()->role->id == 1)
-                        <td>
-                            <a href='#' class='waves-effect waves-light waves-light btn-small btn-flat modal-trigger action-buttons'><i class='material-icons'>edit</i></a>
-                            <a href='#disable' class='waves-effect waves-light waves-light btn-small btn-flat modal-trigger action-buttons disable'
-                            data-id = "{{$holiday->id}}" data-is_disabled = "{{$holiday->is_disabled}}" data-date = "{{$holiday->holiday_date}}">
-                                <i class='material-icons'>do_not_disturb</i>
-                            </a>
-                        </td>
-                        @endif
-                    </tr>
+                    <td>{{$holiday_date}}</td>
+                    <td>{{$holiday->holiday_name}}</td>
+                    @if($holiday->is_disabled == 0)
+                    <td>No</td>
+                    @else
+                    <td>Yes</td>
+                    @endif
+                    @if(Auth::user()->department->id == 9 && Auth::user()->role->id == 1)
+                    <td>
+                        <a href='#' class='waves-effect waves-light waves-light btn-small btn-flat modal-trigger action-buttons'><i
+                                class='material-icons'>edit</i></a>
+                        <a href='#disable' class='waves-effect waves-light waves-light btn-small btn-flat modal-trigger action-buttons disable'
+                            data-id="{{$holiday->id}}" data-is_disabled="{{$holiday->is_disabled}}" data-date="{{$holiday->holiday_date}}">
+                            <i class='material-icons'>do_not_disturb</i>
+                        </a>
+                    </td>
+                    @endif
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -55,8 +56,8 @@ use Carbon\Carbon;
     <div class="modal-content">
         <h4 id="title-disable-placeholder">...</h4>
         {!!Form::open(['action' => ['HolidaysDashboardController@disable'], 'method' => 'POST'])!!}
-        <p id="text-holder">Are you sure you want to this document?</p>
-        <input type="hidden" id="holiday_id_disable" name = "holiday_id_disable" value = "">
+        <blockquote id="text-holder"></blockquote>
+        <input type="hidden" id="holiday_id_disable" name="holiday_id_disable" value="">
     </div>
 
     <div class="modal-footer">
@@ -70,20 +71,21 @@ use Carbon\Carbon;
 
 @push('scripts')
 <script>
-    $(document).ready(function(){
-        $(document).on('click', '.disable', function(){
+    $(document).ready(function () {
+        $(document).on('click', '.disable', function () {
             var id = $(this).data('id');
             var isDisabled = $(this).data('is_disabled');
             var date = $(this).data('date');
-            var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
-            if(isDisabled == 0){
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August",
+                "September", "October", "November", "December"
+            ]
+            if (isDisabled == 0) {
                 var p = 'Disable ' + date.split('-')[1] + ' of ' +
-                months[ date.split('-')[0] - 1 ] + ' in the holiday lists';
+                    months[date.split('-')[0] - 1] + ' in the holiday lists';
                 var t = 'Are you sure you want to disable this date?'
-            }
-            else{
+            } else {
                 var p = 'Enable ' + date.split('-')[1] + ' of ' +
-                months[ date.split('-')[0] - 1 ] + ' in the holiday lists';
+                    months[date.split('-')[0] - 1] + ' in the holiday lists';
                 var t = 'Are you sure you want to enable this date?'
             }
             $('#title-disable-placeholder').text(p);
@@ -95,8 +97,8 @@ use Carbon\Carbon;
             pagingType: "simple",
             dom: '<div>pt',
             pageLength: 15,
-            language:{
-                paginate:{
+            language: {
+                paginate: {
                     previous: "<i class='material-icons'>chevron_left</i>",
                     next: "<i class='material-icons'>chevron_right</i>"
                 }
@@ -104,8 +106,9 @@ use Carbon\Carbon;
         });
 
         $('.modal').modal({
-            preventScrolling : false
+            preventScrolling: false
         });
     });
+
 </script>
 @endpush

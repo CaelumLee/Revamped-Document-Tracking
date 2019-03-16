@@ -46,6 +46,11 @@
                 </tr>
 
                 <tr>
+                    <td class="blue white-text">Creator of record</td>
+                    <td>{{$data['docu']->user->username}}</td>
+                </tr>
+
+                <tr>
                     <td class = "blue white-text">Confidentiality</td>
                     @if($data['docu']->confidentiality == 1)
                         <td>Admin Level</td>

@@ -11,7 +11,8 @@
         <div class="row">
           {!! Form::open(['action' => 'TransactionsController@receive_docu', 'method' => 'POST', ]) !!}
           <input type="hidden" id="docu_id" name = "docu_id" value = "{{$data['docu']->id}}">
-          <input type="hidden" id="transaction_id" name = "transaction_id" value = "{{$t->id}}">
+          <input type="hidden" id="transaction_id" name = "transaction_id" 
+          value = "{{$data['latest_route']->id}}">
           <h5>Receive Document {{$data['docu']->reference_number}}</h5>
             <div class="input-field col s12">
               {{Form::textarea('comment', null, ['id' => 'comment',

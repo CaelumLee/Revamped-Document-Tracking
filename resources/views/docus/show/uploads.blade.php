@@ -40,14 +40,12 @@
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo" style="font-size : 1.5em !important;">Uploads</a>    
 
-                @foreach($data['docu']->transaction->sortByDesc('created_at') as $t)
-                    @if($t->recipient == Auth::user()->id 
-                    && $t->is_received == 1 && $t->has_sent == 0)
-                        <ul id="nav-mobile" class="right">
-                            <li><a class="modal-trigger" href="#upload"><i class="material-icons">edit</i></a></li>
-                        </ul>
-                    @endif
-                @endforeach
+                @if(!is_null($data['latest_route']) && $data['latest_route']->is_received == 1 
+                && $data['latest_route']->has_sent == 0)
+                    <ul id="nav-mobile" class="right">
+                        <li><a class="modal-trigger" href="#upload"><i class="material-icons">edit</i></a></li>
+                    </ul>
+                @endif
             </div>
         </nav>
 

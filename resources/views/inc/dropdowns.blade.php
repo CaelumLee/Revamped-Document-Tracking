@@ -7,11 +7,11 @@
 
 <ul id='notif_dropdown' class='dropdown-content'>
     <li class="header">
-        <h6 class="dropdown-toolbar-title">Notifications 
-        (<span class="notif-count">0</span>)
-        <span class="right">
-            <a href='{{route("readAll")}}' class="black-text hover">Mark all as read</a>    
-        </span>
+        <h6 class="dropdown-toolbar-title">Notifications
+            (<span class="notif-count">0</span>)
+            <span class="right">
+                <a href='{{route("readAll")}}' class="black-text hover">Mark all as read</a>
+            </span>
         </h6>
     </li>
     <ul class="dropdown-menu">
@@ -22,7 +22,7 @@
 <ul id='user_dropdown' class='dropdown-content'>
     <li>
         <form action="{{route('logout')}}" method="POST">
-            @csrf    
+            @csrf
             <button class="btn-large btn-logout red" type="submit">Logout </button>
         </form>
     </li>

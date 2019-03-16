@@ -38,6 +38,7 @@ Route::post('/restore/{id}', 'DocuController@restore');
 Route::post('/approve/{id}', 'DocuController@approve');
 Route::post('/receive', 'TransactionsController@receive_docu');
 Route::post('/send', 'TransactionsController@send_docu');
+Route::post('/deadline', 'TransactionsController@update_date_deadline');
 
 Route::get('/dynamic_pdf/pdf/{id}', 'DynamicPDFController@pdf')->name('pdf');
 
@@ -48,6 +49,11 @@ Route::post('/upload', 'FileUploadsController@upload');
 Route::post('/jsonFile', 'FileUploadsController@getFiles')->name('file_to_json');
 
 Route::get('/dashboard/statistics','AdminDashboard@index')->name('dashboard');
+
+Route::get('/dashboard/departments', 'DepartmentDashboardController@index')->name('department');
+Route::post('/dashboard/departments/add','DepartmentDashboardController@add');
+Route::post('/dashboard/departments/edit','DepartmentDashboardController@edit');
+Route::post('/dashboard/departments/disable','DepartmentDashboardController@disable');
 
 Route::get('/dashboard/holidays','HolidaysDashboardController@index')->name('holidays');
 Route::post('/dashboard/holidays/disable','HolidaysDashboardController@disable');

@@ -46,22 +46,6 @@ $dept13->acronym = 'PI';
 $dept14->acronym = 'RDFCD';
 $dept15->acronym = 'RO';
 
-$dept1->source_type= 'Internal';
-$dept2->source_type= 'Internal';
-$dept3->source_type= 'Internal';
-$dept4->source_type= 'Internal';
-$dept5->source_type= 'Internal';
-$dept6->source_type= 'Internal';
-$dept7->source_type= 'Internal';
-$dept8->source_type= 'Internal';
-$dept9->source_type= 'Internal';
-$dept10->source_type= 'Internal';
-$dept11->source_type= 'Internal';
-$dept12->source_type= 'Internal';
-$dept13->source_type= 'Internal';
-$dept14->source_type= 'Internal';
-$dept15->source_type= 'Internal';
-
 $dept1->save();
 $dept2->save();
 $dept3->save();

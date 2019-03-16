@@ -190,6 +190,7 @@
         dExpected.setDate(dExpected.getDate() + buff);
 
         $('.datepicker').datepicker({
+            autoClose : true,
             format: "yyyy-mm-dd",
             disableWeekends : true,
             minDate : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
@@ -220,6 +221,7 @@
         dExpected.setDate(dExpected.getDate() + buff);
 
         $('.datepicker').datepicker({
+            autoClose : true,
             format: "yyyy-mm-dd",
             disableWeekends : true,
             minDate : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),

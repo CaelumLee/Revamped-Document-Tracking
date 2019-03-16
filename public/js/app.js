@@ -10326,7 +10326,7 @@ function messageForNotification(data) {
   } else if (data.type == NOTIFICATION_TYPES.DeclineNotif) {
     message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was dissaproved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   } else if (data.type == NOTIFICATION_TYPES.AcceptNotif) {
-    message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was approved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Document Approved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was approved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   }
 
   return message;

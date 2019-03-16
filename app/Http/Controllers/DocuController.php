@@ -123,6 +123,24 @@ class DocuController extends Controller
         $docu = Docu::withTrashed()
         ->with('Transaction')
         ->findOrFail($id);
+        
+        if($docu->confidentiality == 1){
+            if(Auth::user()->role->id != 1){
+                if(is_null($docu->transaction->where('recipient', Auth::user()->id)->last())){
+                    return back()->withErrors(['This record is for "admin" role only']);
+                }
+            }
+            
+            // $user_list = $this->user
+            // ->where('role_id', 1)
+            // ->whereNotIn('users.id', [Auth::user()->id])
+            // ->get(['username']);
+        }
+        // else{
+            $user_list = $this->user
+            ->whereNotIn('users.id', [Auth::user()->id])
+            ->get(['username']);
+        // }
 
         //seen
         $docu->transaction
@@ -143,43 +161,46 @@ class DocuController extends Controller
             return $item->is_received;
         });
 
+        //checker for approver if all recipients are finished so the approver can
+        //decide to approve or not
         $all_received = $is_received_collection->every(function($value){
             return $value == 1;
         });
-        
-        $filtered_ids = $docu->transaction
-        ->sortByDesc('created_at')
-        ->map(function($item){
-            return $item->recipient;
-        });
-
-        if($docu->confidentiality == 1){
-            $user_list = $this->user
-            ->where('role_id', 1)
-            ->whereNotIn('users.id', [Auth::user()->id])
-            ->whereNotIn('id', $filtered_ids)
-            ->get(['username']);
-        }
-        else{
-            $user_list = $this->user
-            ->whereNotIn('users.id', [Auth::user()->id])
-            ->whereNotIn('id', $filtered_ids)
-            ->get(['username']);
-        }
-
+    
+        //lists of holidays
         $holidays_list = $this->holidays->pluck('holiday_date')->toArray();
 
+        //lists of file uploads
         $file_uploads = $this->files->where('docu_id', $id)
         ->get();
+
+        //check if the button of send / receive must be shown
+        $last = $docu->transaction->where('recipient', Auth::user()->id)->last();
+        if($last->is_received == 0 && $docu->final_action_date >= date('Y-m-d H:i:s')){
+            $receive_bool = true;
+            $send_bool = false;
+        }
+        elseif($last->is_received == 1 && $last->has_sent == 0 
+        && $last->to_continue == 1 && $docu->final_action_date >= date('Y-m-d H:i:s')){
+            $receive_bool = false;
+            $send_bool = true;
+        }
+        else{
+            $receive_bool = false;
+            $send_bool = false; 
+        }
 
         $data = [
             'docu' => $docu,
             'holidays_list' => $holidays_list,
             'user_list' => $user_list,
             'file_uploads' => $file_uploads,
-            'ready_to_approve' => $all_received
+            'ready_to_approve' => $all_received,
+            'receive_bool' => $receive_bool,
+            'send_bool' => $send_bool,
+            'latest_route' => $last
         ];
-        
+
         return view('docus.show', compact('data'));
     }
 
@@ -270,8 +291,9 @@ class DocuController extends Controller
             'to_approve' => 'required',
             'remarks' => 'required'
         ]);
-
+        
         if($request->input('to_approve') == 0){
+            //disapprove
             DB::beginTransaction();
             try{
                 $docu = $this->docu->disapprove($id);
@@ -295,10 +317,16 @@ class DocuController extends Controller
         }
 
         else{
+            //approve
             DB::beginTransaction();
             try{
                 $docu = $this->docu->approve($id);
-                $this->transaction->makeTransactionUponDisapprove($request, $docu);
+                $this->transaction->makeTransactionUponApprove($request, $docu);
+
+                $transaction_instance = $this->transaction->find($request->input('transaction_id'));
+                $transaction_instance->has_sent = 1;
+                $transaction_instance->sent_at = date('Y-m-d H:i:s');
+                $transaction_instance->save();
 
                 $request->session()->flash('success', 'Document ' . $docu->reference_number . ' sent');
                 DB::commit();

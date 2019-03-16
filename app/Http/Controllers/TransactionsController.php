@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Transaction;
 use App\Docu;
+use Carbon\Carbon;
 
 class TransactionsController extends Controller
 {
@@ -90,5 +91,21 @@ class TransactionsController extends Controller
         ];
 
         return view('docus.responses', compact('data'));
+    }
+
+    public function update_date_deadline(Request $request)
+    {
+        $this->validate($request, [
+            'date_deadline' => 'required|date_format:"Y-m-d"'
+        ]);
+
+        $transaction_to_change_date = $this->transaction->find($request->input('transaction_id'));
+        $d = Carbon::createFromFormat('Y-m-d H:i', $request->input('date_deadline') . ' 23:59');
+        $transaction_to_change_date->date_deadline = $d->toDateTimeString();
+        $transaction_to_change_date->save();
+
+        $request->session()->flash('success', 'Date deadline updated!');
+
+        return redirect()->route('docu.show', ['id' => $request->input('docu_id')]);     
     }
 }
