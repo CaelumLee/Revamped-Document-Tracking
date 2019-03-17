@@ -10259,7 +10259,8 @@ var NOTIFICATION_TYPES = {
   SendDocu: 'App\\Notifications\\SendDocu',
   PasswordChange: 'App\\Notifications\\PasswordChange',
   DeclineNotif: 'App\\Notifications\\DeclineNotif',
-  AcceptNotif: 'App\\Notifications\\AcceptNotif'
+  AcceptNotif: 'App\\Notifications\\AcceptNotif',
+  DeadlineNotif: 'App\\Notifications\\DeadlineNotif'
 };
 $(document).ready(function () {
   $('.sidenav').sidenav();
@@ -10320,13 +10321,15 @@ function messageForNotification(data) {
   var message = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu) {
-    message = "<strong class=\"notification-title\">Document Recieved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>\n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Document Received!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>\n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
     message = "<strong class=\"notification-title\">Password Change</strong>\n        <p class=\"notification-desc\">User " + data.data.user + " is requesting for a\n        password change. Click here to redirect to user dashboard";
   } else if (data.type == NOTIFICATION_TYPES.DeclineNotif) {
     message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was dissaproved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   } else if (data.type == NOTIFICATION_TYPES.AcceptNotif) {
     message = "<strong class=\"notification-title\">Document Approved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was approved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+  } else if (data.type == NOTIFICATION_TYPES.DeadlineNotif) {
+    message = "<strong class=\"notification-title\">Deadline to meet!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " that was sent to you needs to be finished\n        until tomorrow. Click here to redirect to the record</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
   }
 
   return message;
@@ -10335,7 +10338,7 @@ function messageForNotification(data) {
 function hrefNotification(data) {
   var href = '';
 
-  if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif || data.type == NOTIFICATION_TYPES.AcceptNotif) {
+  if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif || data.type == NOTIFICATION_TYPES.AcceptNotif || data.type == NOTIFICATION_TYPES.DeadlineNotif) {
     href = "<a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
     href = "<a href ='/dashboard/users?read=" + data.id + "'>";

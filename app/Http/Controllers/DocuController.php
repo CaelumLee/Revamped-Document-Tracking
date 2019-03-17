@@ -176,14 +176,20 @@ class DocuController extends Controller
 
         //check if the button of send / receive must be shown
         $last = $docu->transaction->where('recipient', Auth::user()->id)->last();
-        if($last->is_received == 0 && $docu->final_action_date >= date('Y-m-d H:i:s')){
-            $receive_bool = true;
-            $send_bool = false;
-        }
-        elseif($last->is_received == 1 && $last->has_sent == 0 
-        && $last->to_continue == 1 && $docu->final_action_date >= date('Y-m-d H:i:s')){
-            $receive_bool = false;
-            $send_bool = true;
+        if(!is_null($last)){
+            if($last->is_received == 0 && $docu->final_action_date >= date('Y-m-d H:i:s')){
+                $receive_bool = true;
+                $send_bool = false;
+            }
+            elseif($last->is_received == 1 && $last->has_sent == 0 
+            && $last->to_continue == 1 && $docu->final_action_date >= date('Y-m-d H:i:s')){
+                $receive_bool = false;
+                $send_bool = true;
+            }
+            else{
+                $receive_bool = false;
+                $send_bool = false; 
+            }
         }
         else{
             $receive_bool = false;

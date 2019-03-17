@@ -16,7 +16,8 @@ var NOTIFICATION_TYPES = {
     SendDocu: 'App\\Notifications\\SendDocu',
     PasswordChange : 'App\\Notifications\\PasswordChange',
     DeclineNotif : 'App\\Notifications\\DeclineNotif',
-    AcceptNotif : 'App\\Notifications\\AcceptNotif'
+    AcceptNotif : 'App\\Notifications\\AcceptNotif',
+    DeadlineNotif : 'App\\Notifications\\DeadlineNotif',
 };
 
 $(document).ready(function(){
@@ -90,7 +91,7 @@ function makeNotification(data){
 function messageForNotification(data){
     var message = '';
     if(data.type == NOTIFICATION_TYPES.SendDocu){
-        message =  `<strong class="notification-title">Document Recieved!</strong>
+        message =  `<strong class="notification-title">Document Received!</strong>
         <p class="notification-desc">Document with reference number `+ 
         data.data.reference_number +` was sent to you by `+ data.data.sender +`</p>
         <div class="notification-meta">
@@ -121,13 +122,22 @@ function messageForNotification(data){
             <small class="timestamp">`+ data.created_at +`</small>
         </div>`;
     }
+    else if(data.type == NOTIFICATION_TYPES.DeadlineNotif){
+        message =  `<strong class="notification-title">Deadline to meet!</strong>
+        <p class="notification-desc">Document with reference number `+ 
+        data.data.reference_number +` that was sent to you needs to be finished
+        until tomorrow. Click here to redirect to the record</p> 
+        <div class="notification-meta">
+            <small class="timestamp">`+ data.created_at +`</small>
+        </div>`;
+    }
     return message;
 }
 
 function hrefNotification(data){
     var href = '';
     if(data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif
-    || data.type == NOTIFICATION_TYPES.AcceptNotif){
+    || data.type == NOTIFICATION_TYPES.AcceptNotif || data.type == NOTIFICATION_TYPES.DeadlineNotif){
         href = `<a href ='/docu/`+ data.data.docu_id +`?read=`+data.id +`'>`;
     }
     else if(data.type == NOTIFICATION_TYPES.PasswordChange){
