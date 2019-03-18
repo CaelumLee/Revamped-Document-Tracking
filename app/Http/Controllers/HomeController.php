@@ -127,6 +127,7 @@ class HomeController extends Controller
         join('transactions', 'docus.id', '=', 'transactions.docu_id')
         ->where([
             ['transactions.recipient', Auth::user()->id],
+            // ['transactions.is_received', 0],
             ['deleted_at', null]
         ])
         ->select('docus.id')
