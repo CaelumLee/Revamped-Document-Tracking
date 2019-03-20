@@ -164,6 +164,9 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const username_from_url = urlParams.get('username');
+
         $(document).on('click', '#edit_button', function () {
             var id = $(this).data('id');
             var name = $(this).data('name');
@@ -215,6 +218,10 @@
             }
         });
         oTable = $('#users-table').DataTable();
+        if(username_from_url != null){
+            $('#autocomplete-input').val(username_from_url)
+            oTable.search($('#autocomplete-input').val()).draw();
+        }
         $('#autocomplete-input').keyup(function () {
             oTable.search($(this).val()).draw();
         });

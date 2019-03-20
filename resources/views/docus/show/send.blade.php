@@ -11,7 +11,7 @@
         <div class="row">
             {!! Form::open(['action' => 'TransactionsController@send_docu', 'method' => 'POST', ]) !!}
             <input type="hidden" id="docu_id" name="docu_id" value="{{$data['docu']->id}}">
-            <input type="hidden" id="transaction_id" name="transaction_id" value="{{$data['latest_route']->id}}">
+            <input type="hidden" id="transaction_id" name="transaction_id" value="{{$data['latest_route_of_current_user']->id}}">
 
             <div class="col s12">
                 <div class="input-field">

@@ -83,7 +83,8 @@ $diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft
             @endif
 
             @if($data['ready_to_approve'] == true && Auth::user()->role->id == 4
-            && !is_null($data['latest_route']) && $data['docu']->final_action_date >= date('Y-m-d H:i:s'))
+            && !is_null($data['latest_route']) && $data['latest_route']->recipient == Auth::user()->id 
+            && $data['docu']->final_action_date >= date('Y-m-d H:i:s'))
             @include('docus.show.approve')
             @endif
 

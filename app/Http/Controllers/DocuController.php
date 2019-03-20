@@ -158,7 +158,13 @@ class DocuController extends Controller
         $is_received_collection = $docu->transaction
         ->sortByDesc('created_at')
         ->map(function($item){
-            return $item->is_received;
+            if(($item->is_received == 1 && $item->to_continue == 0) 
+            || ($item->is_received == 1 && $item->to_continue == 1 && $item->has_sent == 1)){
+                return 1;
+            }
+            else{
+                return 0;
+            }
         });
 
         //checker for approver if all recipients are finished so the approver can
@@ -195,7 +201,7 @@ class DocuController extends Controller
             $receive_bool = false;
             $send_bool = false; 
         }
-
+        
         $data = [
             'docu' => $docu,
             'holidays_list' => $holidays_list,
@@ -204,7 +210,8 @@ class DocuController extends Controller
             'ready_to_approve' => $all_received,
             'receive_bool' => $receive_bool,
             'send_bool' => $send_bool,
-            'latest_route' => $last
+            'latest_route_of_current_user' => $last,
+            'latest_route' => $docu->transaction->last()
         ];
 
         return view('docus.show', compact('data'));

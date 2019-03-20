@@ -300,7 +300,13 @@
         });
 
         $('select').formSelect();
-        $('.datepicker').datepicker();
+        $('.datepicker').datepicker({
+            autoClose : true,
+            format: "yyyy-mm-dd",
+            disableWeekends : true,
+            minDate : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
+            disableDayFn : holidayDate,
+        });
     });
 </script>
 @endpush

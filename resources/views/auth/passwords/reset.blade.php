@@ -30,7 +30,7 @@
 
                     <div class='row'>
                         <blockquote>
-                            The admin of your department will receive a notification and you'll wait for
+                            The admin of MIS Departmen will receive a notification and you'll wait for
                             <br>
                             his/her update
                         </blockquote>
