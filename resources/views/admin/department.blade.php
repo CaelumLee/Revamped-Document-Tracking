@@ -1,7 +1,7 @@
 @extends('admin.dashboard')
 @section('main-content')
 <div class="row">
-    <h4>Document Types
+    <h4>Department list
         @if(Auth::user()->department->id == 9 && Auth::user()->role->id == 1)
         <span>
             <a href="#add_department" class="right waves-effect waves-light green btn modal-trigger">Add Department</a>

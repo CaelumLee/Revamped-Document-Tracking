@@ -56,7 +56,9 @@ Route::post('/dashboard/departments/edit','DepartmentDashboardController@edit');
 Route::post('/dashboard/departments/disable','DepartmentDashboardController@disable');
 
 Route::get('/dashboard/holidays','HolidaysDashboardController@index')->name('holidays');
+Route::post('/dashboard/holidays/add','HolidaysDashboardController@add');
 Route::post('/dashboard/holidays/disable','HolidaysDashboardController@disable');
+Route::post('/dashboard/holidays/edit','HolidaysDashboardController@edit');
 
 Route::get('/dashboard/docutype','DocuTypeDashboardController@index')->name('docuType');
 Route::post('/dashboard/docutype/add','DocuTypeDashboardController@add');
