@@ -355,7 +355,7 @@ use App\Department;
                     type: 'POST',
                     url: '{{route("ajax_address")}}',
                     data: {
-                        'username': input,
+                        'name': input,
                         '_token': '<?php echo csrf_token() ?>'
                     },
                     success: function (data) {

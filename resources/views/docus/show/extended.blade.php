@@ -12,7 +12,7 @@
         <a href="{{route('responses', ['id' => $data['docu']->id])}}" target='_self'>User Responses</a>
     </li>
 
-    <li class="tab"><a href="{{route('pdf', ['id' => $data['docu']->id])}}" target='_self'>Conver to PDF</a></li>
+    <li class="tab"><a href="{{route('pdf', ['id' => $data['docu']->id])}}" target='_self'>Convert to PDF</a></li>
 
     @if($data['docu']->deleted_at == null && Auth::user()->role->name == 'Admin')
         <li class="tab"><a href="#archiveConfirm" class="modal-trigger">Archive</a></li>

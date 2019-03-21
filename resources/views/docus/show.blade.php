@@ -145,6 +145,7 @@ $diff_final_action_date = CarbonPeriod::create(Carbon::now(), $a)->countDaysLeft
                 '_token': '<?php echo csrf_token() ?>'
             },
             success: function (data) {
+            console.log(data)
                 $("#File_to_place").html(data.File_Uploads);
             },
             fail: function (err) {

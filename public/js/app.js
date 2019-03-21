@@ -10339,9 +10339,9 @@ function hrefNotification(data) {
   var href = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif || data.type == NOTIFICATION_TYPES.AcceptNotif || data.type == NOTIFICATION_TYPES.DeadlineNotif) {
-    href = "<a href ='/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
+    href = "<a href ='" + url + "/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
-    href = "<a href ='/dashboard/allusers?read=" + data.id + "&username=" + data.data.user + "'>";
+    href = "<a href ='" + url + "/dashboard/allusers?read=" + data.id + "&username=" + data.data.user + "'>";
   }
 
   return href;
@@ -10367,8 +10367,8 @@ function hrefNotification(data) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\PRRC-Dtracking\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\PRRC-Dtracking\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\document_tracking\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\document_tracking\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

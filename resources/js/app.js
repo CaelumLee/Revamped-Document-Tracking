@@ -138,10 +138,10 @@ function hrefNotification(data){
     var href = '';
     if(data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif
     || data.type == NOTIFICATION_TYPES.AcceptNotif || data.type == NOTIFICATION_TYPES.DeadlineNotif){
-        href = `<a href ='/docu/`+ data.data.docu_id +`?read=`+data.id +`'>`;
+        href = `<a href ='` + url + `/docu/`+ data.data.docu_id +`?read=`+data.id +`'>`;
     }
     else if(data.type == NOTIFICATION_TYPES.PasswordChange){
-        href = `<a href ='/dashboard/allusers?read=` + data.id + `&username=` + data.data.user + `'>`;
+        href = `<a href ='` + url + `/dashboard/allusers?read=` + data.id + `&username=` + data.data.user + `'>`;
     }
     return href;
 }

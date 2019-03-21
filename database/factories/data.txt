@@ -82,29 +82,30 @@ $user1 = new App\User();
 $user2 = new App\User();
 $user3 = new App\User();
 $user4 = new App\User();
+$user5 = new App\User();
 
-$user0->username = "AMelevo"
+$user0->username = "amelevo"
 $user0->name = "Arvin Melevo"
 $user0->department_id = 1
 $user0->role_id = 1
 $user0->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
 $user0->remember_token = "rxmDBmkyV8"
 
-$user1->username = "JLee"
+$user1->username = "jlee"
 $user1->name = "Jayson Lee"
 $user1->department_id = 1
 $user1->role_id = 1
 $user1->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
 $user1->remember_token = "rxmDBmkyV8"
 
-$user2->username = "JLucero"
+$user2->username = "jlucero"
 $user2->name = "Jenine Lucero"
 $user2->department_id = 2
 $user2->role_id = 1
 $user2->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
 $user2->remember_token = "5T6AWxvXhq"
 
-$user3->username = "FNohay"
+$user3->username = "fnohay"
 $user3->name = "Ferol Nohay"
 $user3->department_id = 3
 $user3->role_id = 1
@@ -118,11 +119,19 @@ $user4->role_id = 1
 $user4->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
 $user4->remember_token = "ek2QbZ0Paa"
 
+$user5->username = "bmallillin"
+$user5->name = "Brian Mallillin"
+$user5->department_id =9
+$user5->role_id = 1
+$user5->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
+$user5->remember_token = "rxmDBmkyV8"
+
 $user0->save()
 $user1->save()
 $user2->save()
 $user3->save()
 $user4->save()
+$user5->save()
 
 $status1 = new App\Statuscode();
 $status2 = new App\Statuscode();

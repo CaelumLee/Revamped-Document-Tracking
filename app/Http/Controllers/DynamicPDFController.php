@@ -205,7 +205,7 @@ class DynamicPDFController extends Controller
                             }    
 
                         $output .= '</table>'.
-                        '<footer>ISO CODE: ' . $docu_data->iso_code .'</footer></body></html>';
+                        '<footer>' . $docu_data->iso_code .'</footer></body></html>';
         return $output;
     }
 }

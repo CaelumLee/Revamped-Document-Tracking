@@ -175,8 +175,8 @@ class HomeController extends Controller
 
     public function getAddress(Request $request)
     {
-        $username = $request->input('username');
-        $user = User::whereUsername($username)->first();
+        $name = $request->input('name');
+        $user = User::whereName($name)->first();
         if($user){
             return response()->json([
                 'department' => $user->department->name

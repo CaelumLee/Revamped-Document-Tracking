@@ -45,7 +45,7 @@
                             @if($transaction->is_received)
                             Yes
                             &nbsp;
-                            <a href="#comment" class="btn-small btn-flat waves-effect waves-green white modal-trigger action-buttons"
+                            <a href="#comment_modal" class="btn-small btn-flat waves-effect waves-green white modal-trigger action-buttons"
                                 id="view_comment" data-username="{{$transaction->to->username}}" data-comment="{{$transaction->comment}}">
                                 <i class="material-icons">remove_red_eye</i>
                             </a>
@@ -62,12 +62,12 @@
     </div>
 </div>
 
-<div id="comment" class="modal">
+<div id="comment_modal" class="modal">
     <div class="modal-content">
         <div class="row">
             <h4 id="comment-title"></h4>
             <blockquote id="comment-content">
-
+                
             </blockquote>
         </div>
     </div>

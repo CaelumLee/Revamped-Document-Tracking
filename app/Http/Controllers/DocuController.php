@@ -55,7 +55,7 @@ class DocuController extends Controller
         $docu_type = $this->type->where('is_disabled', '0')->pluck('docu_type', 'id');
         $holidays_list = $this->holidays->all();
         $users = $this->user->all()
-        ->pluck('username');
+        ->pluck('name');
         $data = [
             'docu_type' => $docu_type,
             'holidays_list' => $holidays_list,

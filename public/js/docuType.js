@@ -140,7 +140,7 @@ $(document).on("click", ".delete", function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\PRRC-Dtracking\resources\js\docuType.js */"./resources/js/docuType.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\document_tracking\resources\js\docuType.js */"./resources/js/docuType.js");
 
 
 /***/ })
