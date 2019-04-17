@@ -15,7 +15,7 @@ use App\Department;
             <a href="{{route('home')}}" class="btn red" style=" float:right; margin:auto;">Cancel</a>
             <br><br>
             <div class="row">
-                {!! Form::open(['action' => 'DocuController@store', 'method' => 'POST', ]) !!}
+                {!! Form::open(['id' => 'create_form' ,'action' => 'DocuController@store', 'method' => 'POST', ]) !!}
                 {{Form::hidden('user_id', Auth::user()->id)}}
 
                 <div class="col s5">
@@ -170,6 +170,16 @@ use App\Department;
                     </div>
                 </div>
 
+                <div class="col s8 file-field input-field">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file" name="filename[]" multiple>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                    </div>
+                </div>
+
                 <div class="col s4 ">
                     <div class="input-field right-align">
                         {{Form::submit('Create', ['class'=>'btn green', 'id' => 'create_button'])}}
@@ -196,9 +206,13 @@ use App\Department;
         };
     }(jQuery));
 
-    $('#create_button').click(function () {
-        $('.preloader-background').visible();
-        $('.preloader-wrapper').visible();
+
+    (function(){
+        $('#create_form').on('submit', function(){
+            $('#create_button').attr('disabled', true);
+                // $('.preloader-background').visible();
+                // $('.preloader-wrapper').visible();
+        })
     })
 
     var holiday_list = [

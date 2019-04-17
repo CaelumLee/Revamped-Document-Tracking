@@ -15,17 +15,21 @@ class FileUploadsController extends Controller
         $this->uploads = $fileUploads;
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, $docu_id)
     {
+        // $messages = [
+        //     'filename.*' => 'The :input'
+        // ];
+
         $this->validate($request, [
             'filename' => 'array',
-            'filename.*' => 'mimes:jpeg,bmp,png,pptx,pdf,xlsx,docx|max:500000',
+            'filename.*' => 'mimes:docx,doc,jpeg,bmp,png,pptx,pdf,xlsx,xls,ppt,jpg|max:20000',
         ]);
         
-        $this->uploads->upload($request);
+        $this->uploads->upload($docu_id, $request);
         $request->session()->flash('success', 'File/s uploaded!');
         
-        return redirect()->route('docu.show', ['id' => $request->input('docu_id')]);
+        return redirect()->route('docu.show', ['id' => $docu_id]);
     }
 
     public function getFiles(Request $request)

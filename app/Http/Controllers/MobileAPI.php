@@ -45,14 +45,14 @@ class MobileAPI extends Controller
         return response()->json($docus, 200);
     }
 
-    public function my_docu(Request $request)
+    public function my_docu($id)
     {
         $docus = Docu::orderBy('docus.created_at' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
-        ->where('creator', $request->input('id'))
+        ->where('creator', $id)
         ->get();
 
         return response()->json($docus, 200);
@@ -86,11 +86,11 @@ class MobileAPI extends Controller
         return response()->json($docus, 200);
     }
 
-    public function received(Request $request)
+    public function received($id)
     {
         $docu_ids= Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
         ->where([
-            ['transactions.recipient', $request->input('id')],
+            ['transactions.recipient', $id],
             ['transactions.is_received', 0],
             ['deleted_at', null]
         ])

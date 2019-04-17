@@ -10307,7 +10307,7 @@ function makeNotification(data) {
   var existingNotifications = notifications.html();
   var message = messageForNotification(data);
   var href = hrefNotification(data);
-  var newNotificationHtml = "\n        <li class=\"notification active\">" + href + "<div class=\"media\">\n                <div class=\"media-body\">" + message + "</div>\n            </div>\n            </a></li>\n    ";
+  var newNotificationHtml = "\n        <li class=\"notification active\">\n            ".concat(href, "\n                <div class=\"media\">\n                    <div class=\"media-body\">\n                        ").concat(message, "\n                    </div>\n                </div>\n            </a>\n        </li>");
   notifications.html(newNotificationHtml + existingNotifications);
   notificationsCount += 1;
   notificationsCountElem.attr('data-count', notificationsCount);
@@ -10321,15 +10321,15 @@ function messageForNotification(data) {
   var message = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu) {
-    message = "<strong class=\"notification-title\">Document Received!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was sent to you by " + data.data.sender + "</p>\n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Document Received!</strong>\n        <p class=\"notification-desc\">Document with reference number ".concat(data.data.reference_number, "\n        was sent to you by ").concat(data.data.sender, " </p>\n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">").concat(data.created_at, "</small>\n        </div>");
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
-    message = "<strong class=\"notification-title\">Password Change</strong>\n        <p class=\"notification-desc\">User " + data.data.user + " is requesting for a\n        password change. Click here to redirect to user dashboard";
+    message = "<strong class=\"notification-title\">Password Change</strong>\n        <p class=\"notification-desc\">User ".concat(data.data.user, " is requesting for a\n        password change. Click here to redirect to user dashboard");
   } else if (data.type == NOTIFICATION_TYPES.DeclineNotif) {
-    message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was dissaproved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Document Disapproved!</strong>\n        <p class=\"notification-desc\">Document with reference number ".concat(data.data.reference_number, "\n         was dissaproved and sent to you by ").concat(data.data.sender, "\n        <br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">").concat(data.created_at, "</small>\n        </div>");
   } else if (data.type == NOTIFICATION_TYPES.AcceptNotif) {
-    message = "<strong class=\"notification-title\">Document Approved!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " was approved and sent to you by " + data.data.sender + "<br>Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Document Approved!</strong>\n        <p class=\"notification-desc\">Document with reference number ".concat(data.data.reference_number, " \n        was approved and sent to you by ").concat(data.data.sender, " <br>\n        Click to see the remarks made</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">").concat(data.created_at, "</small>\n        </div>");
   } else if (data.type == NOTIFICATION_TYPES.DeadlineNotif) {
-    message = "<strong class=\"notification-title\">Deadline to meet!</strong>\n        <p class=\"notification-desc\">Document with reference number " + data.data.reference_number + " that was sent to you needs to be finished\n        until tomorrow. Click here to redirect to the record</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">" + data.created_at + "</small>\n        </div>";
+    message = "<strong class=\"notification-title\">Deadline to meet!</strong>\n        <p class=\"notification-desc\">Document with reference number ".concat(data.data.reference_number, "\n        that was sent to you needs to be finished\n        until tomorrow. Click here to redirect to the record</p> \n        <div class=\"notification-meta\">\n            <small class=\"timestamp\">").concat(data.created_at, "</small>\n        </div>");
   }
 
   return message;
@@ -10339,9 +10339,9 @@ function hrefNotification(data) {
   var href = '';
 
   if (data.type == NOTIFICATION_TYPES.SendDocu || data.type == NOTIFICATION_TYPES.DeclineNotif || data.type == NOTIFICATION_TYPES.AcceptNotif || data.type == NOTIFICATION_TYPES.DeadlineNotif) {
-    href = "<a href ='" + url + "/docu/" + data.data.docu_id + "?read=" + data.id + "'>";
+    href = "<a href = '".concat(url, "/docu/").concat(data.data.docu_id, "?read=").concat(data.id, "'>");
   } else if (data.type == NOTIFICATION_TYPES.PasswordChange) {
-    href = "<a href ='" + url + "/dashboard/allusers?read=" + data.id + "&username=" + data.data.user + "'>";
+    href = "<a href = '".concat(url, "/dashboard/allusers?read=").concat(data.id, "$username=").concat(data.data.user, "'>");
   }
 
   return href;
@@ -10367,8 +10367,8 @@ function hrefNotification(data) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\document_tracking\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\document_tracking\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\PRRC-Dtracking\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\PRRC-Dtracking\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

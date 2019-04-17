@@ -87,6 +87,8 @@ class DocuController extends Controller
             'remarks' => 'required',
             'final_action_date' => 'required',
             'date_deadline' => 'required|before_or_equal:final_action_date',
+            'filename' => 'array',
+            'filename.*' => 'mimes:docx,doc,jpeg,bmp,png,pptx,pdf,xlsx,xls,ppt,jpg|max:20000',
         ], $messages);
 
         DB::beginTransaction();
@@ -94,6 +96,7 @@ class DocuController extends Controller
                 $qrcode = new BaconQrCodeGenerator;
                 $docu_saved = $this->docu->singleSave($request);
                 $this->transaction->makeManualTransaction($request, $docu_saved);
+                $this->files->upload($docu_saved->id, $request);
                 
                 $qrcode->size(100)
                 ->encoding('UTF-8')
@@ -178,8 +181,9 @@ class DocuController extends Controller
 
         //lists of file uploads
         $file_uploads = $this->files->where('docu_id', $id)
+        ->orderby('created_at', 'desc')
         ->get();
-
+        
         //check if the button of send / receive must be shown
         $last = $docu->transaction->where('recipient', Auth::user()->id)->last();
         if(!is_null($last)){

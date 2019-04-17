@@ -1,9 +1,8 @@
 <div id="upload" class="modal">
     <div class="modal-content">
         <div class="row">
-            {!!Form::open(['action' => ['FileUploadsController@upload'], 
+            {!!Form::open(['action' => ['FileUploadsController@upload', $data['docu']->id], 
             'method' => 'POST', 'enctype' => 'multipart/form-data'])!!}
-            <input type="hidden" id="docu_id" name = "docu_id" value = "{{$data['docu']->id}}">
             <div class="file-field input-field">
                 <div class="btn">
                     <span>File</span>
@@ -59,9 +58,10 @@
                 </thead>
                 
                 <tbody>
-                    @foreach($data['file_uploads'] as $key => $file)
+                    @php($file_size = sizeof($data['file_uploads']))
+                    @foreach($data['file_uploads'] as $file)
                         <tr>
-                            <td>Upload {{$key + 1}}</td>
+                            <td>Upload {{$file_size}}</td>
                             <td>
                                 <a href='#viewFiles' class='waves-effect waves-light btn-small btn-flat modal-trigger' 
                                 id='view_files' data-upload_file_id = "{{$file->id}}">
@@ -69,6 +69,7 @@
                                 </a>
                             </td>
                         </tr>
+                        @php($file_size--)
                     @endforeach
                 </tbody>
             </table>

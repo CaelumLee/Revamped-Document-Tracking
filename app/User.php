@@ -78,6 +78,7 @@ class User extends Authenticatable
     {
         $user = $this->find($data->input('hidden_id'));
         $user->password = Hash::make($data->input('password'));
+        $user->first_login = 1;
         $user->save();
 
         return $user;

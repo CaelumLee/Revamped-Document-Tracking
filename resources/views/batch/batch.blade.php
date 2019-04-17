@@ -46,6 +46,7 @@
     $('#submit_button').click(function () {
         $('.preloader-background').visible();
         $('.preloader-wrapper').visible();
+        $(this).attr('disabled', true);
     })
 
 </script>

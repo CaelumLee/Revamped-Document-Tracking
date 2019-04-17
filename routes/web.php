@@ -45,7 +45,7 @@ Route::get('/dynamic_pdf/pdf/{id}', 'DynamicPDFController@pdf')->name('pdf');
 Route::get('/responses/{id}', 'TransactionsController@responses')->name('responses');
 Route::get('/routeinfo/{id}', 'TransactionsController@routeinfo')->name('route_info');
 
-Route::post('/upload', 'FileUploadsController@upload');
+Route::post('/upload/{id}', 'FileUploadsController@upload');
 Route::post('/jsonFile', 'FileUploadsController@getFiles')->name('file_to_json');
 
 Route::get('/dashboard/statistics','AdminDashboard@index')->name('dashboard');

@@ -48,15 +48,18 @@ class FileUploads extends Model
         return $file_info;
     }
 
-    public function upload($data)
+    public function upload($docu_id, $data)
     {
         if($data->hasFile('filename')){
             $file_to_upload = $data->file('filename');
             $file_info = $this->file_store($file_to_upload);
         }
+        else{
+            $file_info = [];
+        }
 
         $fileStore_instance = new FileUploads;
-        $fileStore_instance->docu_id = $data->input('docu_id');
+        $fileStore_instance->docu_id = $docu_id;
         $fileStore_instance->uploaded_by = Auth::user()->id;
         $fileStore_instance->upload_data = json_encode($file_info);
         $fileStore_instance->save();
@@ -81,31 +84,34 @@ class FileUploads extends Model
                         $directory_with_date_of_file .'/' . $filename) ."' target='_blank'>" .
                         "<img id='image-upload' src='" . asset('storage/uploads/'. 
                         $directory_with_date_of_file .'/' . $filename) .  "'>" .
-                        "</a><span>". $filename ."</span></div>";
+                        "</a><span class='truncate'>". $filename ."</span></div>";
                         break;
                     case "pdf":
                         $output .= "<div class ='col s4'> <a href='" . asset('storage/uploads/'. 
                         $directory_with_date_of_file .'/' . $filename) . "' download>" .
                         "<img id='image-upload' src='" . asset('images/pdf_logo.jpg') . "'>" .
-                        "</a></div>";
+                        "</a><span class='truncate'>". $filename ."</div>";
                         break;
                     case "pptx":
+                    case "ppt":
                         $output .= "<div class ='col s4'> <a href='" . asset('storage/uploads/'. 
                         $directory_with_date_of_file .'/' . $filename) . "' download>" .
                         "<img id='image-upload' src='" . asset('images/powerpoint_logo.png') . "'>" .
                         "</a><span>". $filename ."</span></div>";
                         break;
                     case "docx":
+                    case "doc" :
                     $output .= "<div class ='col s4'> <a href='" . asset('storage/uploads/'. 
                     $directory_with_date_of_file .'/' . $filename) . "' download>" .
-                    "<img id='image-upload' src='" . asset('images/word.png') . "'>" .
-                        "</a><span>". $filename ."</span></div>";
+                    "<img id='image-upload' src='" . asset('images/word_logo.png') . "'>" .
+                        "</a><span class='truncate'>". $filename ."</span></div>";
                         break;
                     case "xlsx":
+                    case "xls":
                         $output .= "<div class ='col s4'> <a href='" . asset('storage/uploads/'. 
                         $directory_with_date_of_file .'/' . $filename) . "' download>" .
                         "<img id='image-upload' src='" . asset('images/excel_logo.png') . "'>" .
-                        "</a><span>". $filename ."</span></div>";
+                        "</a><span class='truncate'>". $filename ."</span></div>";
                         break;
                 }
             }
