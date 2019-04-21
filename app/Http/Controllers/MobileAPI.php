@@ -35,7 +35,7 @@ class MobileAPI extends Controller
 
     public function all_docu()
     {
-        $docus = Docu::orderBy('docus.created_at' , 'asc')
+        $docus = Docu::orderBy('docus.final_action_date' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
@@ -47,7 +47,7 @@ class MobileAPI extends Controller
 
     public function my_docu($id)
     {
-        $docus = Docu::orderBy('docus.created_at' , 'asc')
+        $docus = Docu::orderBy('docus.final_action_date' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
@@ -126,9 +126,22 @@ class MobileAPI extends Controller
     public function show(Request $request)
     {
         $docu_info = Docu::withTrashed()
-        ->with(['transaction.from', 'transaction.to'])
+        ->with(['transaction.from', 'transaction.to', 'transaction.fromLoc', 'transaction.toLoc'])
         ->find($request->input('id'));
 
         return response()->json($docu_info, 200);
+    }
+
+    public function details(Request $request)
+    {
+        $docu_details = Docu::withTrashed()
+        ->where('reference_number', $request->input('reference_number'))
+        ->first();
+
+        if(is_null($docu_details)){
+            return response()->json($docu_details, 404);
+        }
+
+        return response()->json($docu_details, 200);
     }
 }

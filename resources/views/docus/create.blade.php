@@ -15,7 +15,7 @@ use App\Department;
             <a href="{{route('home')}}" class="btn red" style=" float:right; margin:auto;">Cancel</a>
             <br><br>
             <div class="row">
-                {!! Form::open(['id' => 'create_form' ,'action' => 'DocuController@store', 'method' => 'POST', ]) !!}
+                {!! Form::open(['id' => 'create_form' ,'action' => 'DocuController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 {{Form::hidden('user_id', Auth::user()->id)}}
 
                 <div class="col s5">

@@ -29,3 +29,5 @@ Route::get('/archive', 'MobileAPI@archived');
 Route::get('/receive/{id}', 'MobileAPI@received');
 
 Route::post('/show', 'MobileAPI@show');
+
+Route::post('/qr_details', 'MobileAPI@details');

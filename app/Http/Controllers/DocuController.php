@@ -72,11 +72,14 @@ class DocuController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $messages = [
             'hidden_recipients.required' => 'Route to/CC field must not be empty'
         ];
 
         $this->validate($request,[
+            'filename' => 'array',
+            'filename.*' => 'mimes:docx,doc,jpeg,bmp,png,pptx,pdf,xlsx,xls,ppt,jpg|max:20000',
             'typeOfDocu' => 'required',
             'rushed' => 'required',
             'confidential' => 'required',
@@ -87,8 +90,6 @@ class DocuController extends Controller
             'remarks' => 'required',
             'final_action_date' => 'required',
             'date_deadline' => 'required|before_or_equal:final_action_date',
-            'filename' => 'array',
-            'filename.*' => 'mimes:docx,doc,jpeg,bmp,png,pptx,pdf,xlsx,xls,ppt,jpg|max:20000',
         ], $messages);
 
         DB::beginTransaction();
@@ -96,7 +97,9 @@ class DocuController extends Controller
                 $qrcode = new BaconQrCodeGenerator;
                 $docu_saved = $this->docu->singleSave($request);
                 $this->transaction->makeManualTransaction($request, $docu_saved);
-                $this->files->upload($docu_saved->id, $request);
+                if($request->hasFile('filename')){
+                    $this->files->upload($docu_saved->id, $request);
+                }
                 
                 $qrcode->size(100)
                 ->encoding('UTF-8')
