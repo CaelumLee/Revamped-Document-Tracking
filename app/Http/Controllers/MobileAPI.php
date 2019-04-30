@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Docu;
+use App\Department;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class MobileAPI extends Controller
 {
@@ -126,8 +128,70 @@ class MobileAPI extends Controller
     public function show(Request $request)
     {
         $docu_info = Docu::withTrashed()
-        ->with(['transaction.from', 'transaction.to', 'transaction.fromLoc', 'transaction.toLoc'])
-        ->find($request->input('id'));
+        // ->with(['transaction.from', 'transaction.to', 'transaction.fromLoc', 'transaction.toLoc'])
+        ->with('transaction')
+        ->where('reference_number', $request->input('reference_number'))
+        ->first();
+
+        if(is_null($docu_info)){
+            return response()->json($docu_info, 404);
+        }
+
+        $transactions_of_docu = $docu_info->transaction;
+
+        foreach($transactions_of_docu as $transaction){
+            $transaction->location = $transaction->fromLoc->acronym;
+            $transaction->in_charge = $transaction->from->name;
+            $transaction->route = $transaction->toLoc->acronym;
+            $transaction->recipient = $transaction->to->name;
+        }
+
+        Collection::macro('pluckTransactions', function($data){
+            return $this->map(function($item) use ($data){
+                $list = [];
+                foreach ($data as $key) {
+                    if($key == "created_at"){
+                        $list[$key] = data_get($item, $key)->toDateTimeString();
+                    }
+                    else{
+                        $list[$key] = data_get($item, $key);
+                    }
+                }
+                return $list;
+            }, new static);
+        });
+
+        $new_transaction_record = $transactions_of_docu->pluckTransactions(['location', 
+        'in_charge', 'route', 'recipient', 'remarks', 'is_received', 'date_deadline', 'comment',
+        'to_continue', 'seen_at', 'received_at', 'sent_at', 'has_sent', 'created_at']);
+
+        unset($docu_info->transaction);
+
+        $docu_info->department = $docu_info->department->name;
+        $docu_info->creator = $docu_info->user->name;
+        $docu_info->docuType = $docu_info->typeOfDocu->docu_type;
+        $docu_info->status = $docu_info->statuscode->status;
+        
+        $sender_address = $docu_info->sender_address;
+        $dept = Department::where('name', $sender_address)->first();
+
+        if(is_null($dept)){
+            $docu_info->source = "External";
+        }
+        else{
+            $docu_info->source = "Internal";
+        }
+
+        $docu_info->transaction = $new_transaction_record;
+
+        unset($docu_info->department);
+        unset($docu_info->department_id);
+        unset($docu_info->user);
+        unset($docu_info->statuscode_id);
+        unset($docu_info->type_of_docu_id);
+        unset($docu_info->type_of_docu);
+        unset($docu_info->statuscode);
+        
 
         return response()->json($docu_info, 200);
     }
