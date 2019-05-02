@@ -47,7 +47,7 @@
 
                 <tr>
                     <td class="blue white-text">Creator of record</td>
-                    <td>{{$data['docu']->user->username}}</td>
+                    <td>{{$data['docu']->user->name}}</td>
                 </tr>
 
                 <tr>

@@ -28,9 +28,9 @@
                     @foreach($data['docu']->transaction->sortByDesc('created_at') as $transaction)
                     <tr>
                         <th>{{$transaction->fromLoc->acronym}}</th>
-                        <th>{{$transaction->from->username}}</th>
+                        <th>{{$transaction->from->name}}</th>
                         <th>{{$transaction->toLoc->acronym}}</th>
-                        <th>{{$transaction->to->username}}</th>
+                        <th>{{$transaction->to->name}}</th>
                         <th>{{$transaction->remarks}}</th>
                         <th>
                             {{Carbon::parse($transaction->date_deadline)->format('Y-m-d H:i:s a')}}
