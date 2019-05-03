@@ -40,7 +40,7 @@ use Carbon\Carbon;
                 @endif
                 <td>{{$docu->reference_number}}</td>
                 <td><a class="blue-text text-darken-4" href="{{route('docu.show', ['id' => $docu->id])}}">{{$docu->subject}}</a></td>
-                <td>{{$docu->user->username}}</td>
+                <td>{{$docu->user->name}}</td>
                 <td>{{Carbon::parse($docu->final_action_date)->format('Y-m-d h:i:s a')}}</td>
                 <td>{{$docu->statuscode->status}}</td>
             </tr>

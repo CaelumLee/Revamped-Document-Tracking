@@ -21,14 +21,14 @@ class MobileAPI extends Controller
             }
             else{
                 $out = [
-                    'message' => 'Wrong password'
+                    'message' => 'Wrong username/password input. Try again!'
                 ];
                 $code = 404;
             }
         }
         else{
             $out = [
-                'message' => 'No user found'
+                'message' => 'Wrong username/password input. Try again!'
             ];
             $code = 404;
         }
@@ -40,7 +40,7 @@ class MobileAPI extends Controller
         $docus = Docu::orderBy('docus.final_action_date' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->get();
 
@@ -52,7 +52,7 @@ class MobileAPI extends Controller
         $docus = Docu::orderBy('docus.final_action_date' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->where('creator', $id)
         ->get();
@@ -67,7 +67,7 @@ class MobileAPI extends Controller
         ->orderBy('docus.created_at' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->get();
 
@@ -79,7 +79,7 @@ class MobileAPI extends Controller
         $docus = Docu::orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'asc')
         ->where('final_action_date', '<' , Carbon::now())
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
@@ -103,7 +103,7 @@ class MobileAPI extends Controller
         $docus = Docu::whereIn('docus.id', $docu_ids)
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'desc')
@@ -117,7 +117,7 @@ class MobileAPI extends Controller
         $docus = Docu::onlyTrashed()
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
-        ->select('docus.id as docu_id', 'statuscode.status', 'users.username' ,
+        ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject')
         ->orderBy('deleted_at', 'desc')
         ->get();
