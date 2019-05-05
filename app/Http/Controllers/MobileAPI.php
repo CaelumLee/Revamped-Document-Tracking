@@ -63,11 +63,12 @@ class MobileAPI extends Controller
 
     public function all_docu()
     {
-        $docus = Docu::orderBy('docus.final_action_date' , 'asc')
+        $docus = Docu::orderBy('is_rush', 'desc')
+        ->orderBy('docus.final_action_date' , 'desc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->get();
 
         return response()->json($docus, 200);
@@ -75,11 +76,11 @@ class MobileAPI extends Controller
 
     public function my_docu($id)
     {
-        $docus = Docu::orderBy('docus.final_action_date' , 'asc')
+        $docus = Docu::orderBy('docus.created_at' , 'asc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->where('creator', $id)
         ->get();
 
@@ -90,11 +91,11 @@ class MobileAPI extends Controller
     {
         $docus = Docu::withTrashed()
         ->whereNotNull('approved_at')
-        ->orderBy('docus.created_at' , 'asc')
+        ->orderBy('final_action_date', 'desc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->get();
 
         return response()->json($docus, 200);
@@ -106,7 +107,7 @@ class MobileAPI extends Controller
         ->orderBy('final_action_date', 'asc')
         ->where('final_action_date', '<' , Carbon::now())
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->get();
@@ -130,7 +131,7 @@ class MobileAPI extends Controller
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'desc')
         ->get();
@@ -144,7 +145,7 @@ class MobileAPI extends Controller
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
-                'reference_number', 'final_action_date', 'docus.subject')
+                'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->orderBy('deleted_at', 'desc')
         ->get();
 
