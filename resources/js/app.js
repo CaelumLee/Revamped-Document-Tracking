@@ -141,7 +141,7 @@ function hrefNotification(data){
         href = `<a href = '${url}/docu/${data.data.docu_id}?read=${data.id}'>`;
     }
     else if(data.type == NOTIFICATION_TYPES.PasswordChange){
-        href = `<a href = '${url}/dashboard/allusers?read=${data.id}$username=${data.data.user}'>`
+        href = `<a href = '${url}/dashboard/allusers?read=${data.id}&username=${data.data.user}'>`
     }
     return href;
 }

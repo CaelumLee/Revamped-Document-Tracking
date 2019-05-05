@@ -21,6 +21,7 @@ Route::get('/docuapi', 'DocuAPI@index')->name('DocuJson');
 Route::get('/deptlist', 'DocuAPI@deptlist')->name('DeptList');
 
 Route::post('/mobile_login', 'MobileAPI@login');
+Route::post('/change', 'MobileAPI@request_for_change_password');
 Route::get('/all_docus', 'MobileAPI@all_docu');
 Route::get('/my_docus/{id}', 'MobileAPI@my_docu');
 Route::get('/accept', 'MobileAPI@accepted');

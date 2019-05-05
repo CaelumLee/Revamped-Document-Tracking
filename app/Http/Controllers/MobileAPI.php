@@ -9,6 +9,7 @@ use App\Docu;
 use App\Department;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use App\Notifications\PasswordChange;
 
 class MobileAPI extends Controller
 {
@@ -33,6 +34,31 @@ class MobileAPI extends Controller
             $code = 404;
         }
         return response()->json($out, $code);
+    }
+
+    public function request_for_change_password(Request $request){
+        $user = User::where('username', $request->input('username'))->first();
+        if(is_null($user)){
+            $out = [
+                'message' => 'Your search did not return any results. Please try again with other information.'
+            ];
+
+            return response()->json($out, 404);
+        }
+        
+        $admin = User::where([
+                ['role_id', 1],
+                ['department_id', 9]
+                ])
+                ->first();
+        
+        $admin->notify(new PasswordChange($user));
+
+        $out = [
+            'message' => "Password reset request has been sent! Please wait for your admin's update"
+        ];
+
+        return response()->json($out, 200);
     }
 
     public function all_docu()
@@ -135,6 +161,18 @@ class MobileAPI extends Controller
 
         if(is_null($docu_info)){
             return response()->json($docu_info, 404);
+        }
+
+        if($docu_info->confidentiality == 1){
+            if($request->input('userRoleID') != 1){
+                if(is_null($docu_info->transaction->where('recipient', $request->input('userID'))->last())){
+                    $out = [
+                        'message' => 'This record is for "admin" role only'
+                    ];
+
+                    return response()->json($out,404);
+                }
+            }
         }
 
         $transactions_of_docu = $docu_info->transaction;
