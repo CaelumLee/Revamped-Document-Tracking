@@ -184,8 +184,8 @@ class DynamicPDFController extends Controller
                             if($route_info->isNotEmpty()){
                                 foreach($route_info as $info){
                                     $output .= '<tr>
-                                        <td>' . $info->from->username . '</td>
-                                        <td>' . $info->to->username . '</td>
+                                        <td>' . $info->from->name . '</td>
+                                        <td>' . $info->to->name . '</td>
                                         <td>' . Carbon::parse($info->created_at)->format('Y-m-d H:i:s a') . '</td>
                                         <td>' . $info->remarks . '</td>
                                         <td>' . Carbon::parse($info->date_deadline)->format('Y-m-d H:i:s a') . '</td>

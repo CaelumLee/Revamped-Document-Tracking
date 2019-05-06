@@ -86,9 +86,13 @@ class HomeController extends Controller
     public function inactive()
     {
         $title = "Inactive Documents";
-        $docus = Docu::orderBy('is_rush', 'desc')
+        $docus = Docu::withTrashed()
+        ->orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'asc')
-        ->where('final_action_date', '<' , Carbon::now())
+        ->where([
+            ['final_action_date', '<' , Carbon::now()],
+            ['statuscode_id', '!=', 1]
+        ])
         ->with('statuscode')
         ->get();
         return view('home', compact('title', 'docus'));

@@ -76,7 +76,8 @@ class MobileAPI extends Controller
 
     public function my_docu($id)
     {
-        $docus = Docu::orderBy('docus.created_at' , 'asc')
+        $docus = Docu::withTrashed()
+        ->orderBy('docus.created_at' , 'desc')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
         ->join('users', 'docus.creator', '=', 'users.id')
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
@@ -103,9 +104,13 @@ class MobileAPI extends Controller
 
     public function inactive()
     {
-        $docus = Docu::orderBy('is_rush', 'desc')
+        $docus = Docu::withTrashed()
+        ->orderBy('is_rush', 'desc')
         ->orderBy('final_action_date', 'asc')
-        ->where('final_action_date', '<' , Carbon::now())
+        ->where([
+            ['final_action_date', '<' , Carbon::now()],
+            ['statuscode_id', '!=', 1]
+        ])
         ->select('docus.id as docu_id', 'statuscode.status', 'users.name as username' ,
                 'reference_number', 'final_action_date', 'docus.subject', 'is_rush')
         ->join('statuscode', 'docus.statuscode_id', '=', 'statuscode.id')
@@ -117,10 +122,11 @@ class MobileAPI extends Controller
 
     public function received($id)
     {
-        $docu_ids= Docu::join('transactions', 'docus.id', '=', 'transactions.docu_id')
+        $docu_ids= Docu::
+        join('transactions', 'docus.id', '=', 'transactions.docu_id')
         ->where([
             ['transactions.recipient', $id],
-            ['transactions.is_received', 0],
+            // ['transactions.is_received', 0],
             ['deleted_at', null]
         ])
         ->select('docus.id')

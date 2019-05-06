@@ -39,7 +39,8 @@ class DocuController extends Controller
     public function index()
     {
         $title = 'My Documents';
-        $docus = $this->docu->orderBy('created_at' , 'asc')
+        $docus = $this->docu->withTrashed()
+        ->orderBy('created_at' , 'desc')
         ->where('creator', Auth::user()->id)
         ->get();
         return view('home', compact('docus', 'title'));

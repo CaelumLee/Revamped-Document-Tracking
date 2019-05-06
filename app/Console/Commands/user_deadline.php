@@ -18,7 +18,7 @@ class user_deadline extends Command
      *
      * @var string
      */
-    protected $signature = 'notif:create_notif_deadline';
+    protected $signature = 'script:create_notif_deadline';
 
     /**
      * The console command description.
