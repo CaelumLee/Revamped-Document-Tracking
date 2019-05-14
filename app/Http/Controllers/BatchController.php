@@ -122,10 +122,9 @@ class BatchController extends Controller
                                 'deadline.date_format' => 'Follow the following format for entering a date
                                     value : "YYYY-MM-DD"',
                             ];
-                            
                             $validator = Validator::make($DataFromExcel,[
                                 'is_rush' => 'required|boolean',
-                                'iso' => 'nullable|alpha_dash',
+                                'iso' => 'nullable',
                                 'confidentiality' => 'required|boolean',
                                 'complexity' => [
                                     'required',

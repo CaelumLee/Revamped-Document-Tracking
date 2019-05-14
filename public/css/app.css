@@ -108,4 +108,11 @@ text-decoration: underline;
 	bottom: 0;
 }
 
+.instructions_lists{
+    width: 600px;
+}
+
+.instructions_lists li{
+    margin:4.5px;
+}
 

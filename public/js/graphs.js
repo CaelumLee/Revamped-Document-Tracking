@@ -1766,7 +1766,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  extends: vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Bar"],
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Bar"],
   props: ['docu_count_url', 'department_list_url'],
   data: function data() {
     return {
@@ -1787,7 +1787,7 @@ __webpack_require__.r(__webpack_exports__);
         Departments.push(e.acronym);
         docuCreatedCount.push(0);
       });
-    }).catch(function (e) {
+    })["catch"](function (e) {
       consoel.log(e);
     }); // let Departments = [
     //   'AD', 'DEDFA', 'BoC', 'DD', 'ER', 'EMD', 'ES', 'FD' ,'MISD', 'DDDO', 
@@ -48519,8 +48519,8 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-Vue.component('data-counter', __webpack_require__(/*! ./components/DataCounter.vue */ "./resources/js/components/DataCounter.vue").default);
-Vue.component('bar-chart', __webpack_require__(/*! ./components/BarChart.vue */ "./resources/js/components/BarChart.vue").default);
+Vue.component('data-counter', __webpack_require__(/*! ./components/DataCounter.vue */ "./resources/js/components/DataCounter.vue")["default"]);
+Vue.component('bar-chart', __webpack_require__(/*! ./components/BarChart.vue */ "./resources/js/components/BarChart.vue")["default"]);
 new Vue({
   el: '#main'
 });

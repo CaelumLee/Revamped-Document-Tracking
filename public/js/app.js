@@ -10280,7 +10280,7 @@ $(document).ready(function () {
         });
       }
     });
-    window.Echo.private('App.User.' + window.Laravel.userId).notification(function (notification) {
+    window.Echo["private"]('App.User.' + window.Laravel.userId).notification(function (notification) {
       makeNotification(notification);
     });
   }
