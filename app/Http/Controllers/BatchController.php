@@ -73,7 +73,7 @@ class BatchController extends Controller
 
                             $DataFromExcel['sender_address'] = $row->sender_address;
 
-                            $DataFromExcel['typeOfDocu'] = $row->type_of_document;
+                            $DataFromExcel['typeOfDocu'] = ucfirst(strtolower($row->type_of_document));
                             
                             if($row->final_action_date == ""){
                                 $DataFromExcel['final_action_date'] = null;
