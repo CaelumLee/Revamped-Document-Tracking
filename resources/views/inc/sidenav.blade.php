@@ -21,6 +21,7 @@
     <li><a href='{{route("inactive")}}'><i class="material-icons">error_outline</i>&nbsp; Inactive Documents</a></li>
     <li><a href='{{route("received")}}'><i class="material-icons">note</i>&nbsp; Received Documents</a></li>
     <li><a href='{{route("archived")}}'><i class="material-icons">delete</i>&nbsp; Archived Documents</a></li>
+    <li><a href="#" target="_blank" download><i class="material-icons">android</i>APK File Download</a></li>
     @if(Auth::user()->role->name == 'Admin')
     <li><a href='{{route("dashboard")}}'><i class="material-icons">people</i>&nbsp; Admin Dashboard</a></li>
     @endif
