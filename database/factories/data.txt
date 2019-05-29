@@ -84,8 +84,8 @@ $user3 = new App\User();
 $user4 = new App\User();
 $user5 = new App\User();
 
-$user0->username = "amelevo"
-$user0->name = "Arvin Melevo"
+$user0->username = "aperez"
+$user0->name = "Arwin Perez"
 $user0->department_id = 1
 $user0->role_id = 1
 $user0->password = '$2y$10$5ELydRkX3IX9GjWSjkRvoOprgXsHu.GR5.2B4VPJyJKOQY.g/v1mm'
