@@ -37,7 +37,7 @@
   "license": "ISC",
   "dependencies": {
     "laravel": "0.0.1",
-    "chart.js": "^2.7.3",
+    "chart.js": "^2.9.4",
     "countup.js": "^1.9.3",
     "laravel-echo": "^1.5.2",
     "pusher-js": "^4.3.1",
